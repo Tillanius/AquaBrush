@@ -13,46 +13,189 @@
 body{
     margin:0;
     font-family:'Inter', sans-serif;
-    background:#f5f5f7;
+    background:#fff;
     color:#111;
+    overflow-x:hidden;
 }
 
 /* HEADER */
 .header{
-    background:white;
+    backdrop-filter: blur(16px);
+    background:rgba(255,255,255,0.75);
     height:70px;
-    padding:0 50px;
+    padding:0 60px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    box-shadow:0 1px 0 rgba(0,0,0,0.06);
     position:sticky;
     top:0;
-    z-index:10;
+    z-index:100;
+    border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
 .logo{
     font-weight:200;
-    font-size:26px;
-    letter-spacing:1px;
+    font-size:28px;
 }
 
 .cart{
     position:relative;
-    font-size:22px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* HERO SECTION */
+.hero{
+    height:88vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 8vw;
+    background:linear-gradient(180deg,#fff,#f6f6f6);
+}
+
+.hero-text h1{
+    font-size:64px;
+    font-weight:300;
+    margin:0;
+}
+
+.hero-text p{
+    color:#666;
+    font-size:20px;
+    margin-top:12px;
+}
+
+.hero img{
+    width:420px;
+    transition:1.2s cubic-bezier(.2,.8,.2,1);
+}
+
+.hero img:hover{
+    transform:scale(1.05) translateY(-8px);
+}
+
+/* SHOP GRID */
+.shop{
+    padding:80px 7vw;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap:40px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    border-radius:28px;
+    padding:34px;
+    text-align:center;
+    transition:0.5s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 8px 30px rgba(0,0,0,0.04);
     cursor:pointer;
 }
 
-/* DROPDOWN */
+.card:hover{
+    transform:translateY(-12px);
+    box-shadow:0 35px 80px rgba(0,0,0,0.10);
+}
+
+/* IMAGE ANIMATION */
+.image-box{
+    height:240px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:22px;
+}
+
+.image-box img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    transition:0.7s cubic-bezier(.2,.8,.2,1);
+}
+
+.card:hover img{
+    transform:scale(1.07) translateY(-6px);
+}
+
+/* TEXT */
+h2{
+    font-weight:400;
+    margin:0;
+    font-size:22px;
+}
+
+.price{
+    color:#6e6e73;
+    margin:12px 0 18px;
+}
+
+/* BUTTON LUXUS */
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    background:black;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 40px rgba(0,0,0,0.25);
+}
+
+/* PRODUCT OVERLAY */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter: blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:200;
+}
+
+.overlay.open{
+    display:flex;
+}
+
+.product-modal{
+    width:900px;
+    max-width:90%;
+    background:white;
+    border-radius:30px;
+    padding:50px;
+    display:flex;
+    gap:50px;
+    animation:fadeUp .5s cubic-bezier(.2,.8,.2,1);
+}
+
+.product-modal img{
+    width:300px;
+    object-fit:contain;
+}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* CART DROPDOWN */
 .cart-dropdown{
     position:absolute;
     right:0;
     top:40px;
-    width:280px;
+    width:320px;
     background:white;
-    border-radius:14px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-    padding:18px;
+    border-radius:20px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.2);
+    padding:20px;
     display:none;
 }
 
@@ -64,89 +207,13 @@ body{
     display:flex;
     justify-content:space-between;
     margin-bottom:10px;
-    font-size:14px;
 }
 
 .total{
     border-top:1px solid #eee;
-    padding-top:10px;
-    margin-top:10px;
+    padding-top:12px;
+    margin-top:12px;
     font-weight:500;
-}
-
-/* SHOP GRID */
-.shop{
-    padding:60px 50px;
-    display:flex;
-    gap:50px;
-    flex-wrap:wrap;
-}
-
-/* CARD */
-.card{
-    width:280px;
-    background:white;
-    border-radius:22px;
-    padding:30px;
-    text-align:center;
-    transition:0.25s;
-    box-shadow:0 10px 35px rgba(0,0,0,0.05);
-}
-
-.card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 20px 50px rgba(0,0,0,0.08);
-}
-
-.image-box{
-    width:220px;
-    height:220px;
-    margin:0 auto 20px;
-    background:#f1f1f1;
-    border-radius:18px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.image-box img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-h2{
-    font-weight:400;
-    margin:10px 0 6px;
-}
-
-.price{
-    color:#666;
-    margin-bottom:15px;
-}
-
-select{
-    padding:10px;
-    width:100%;
-    border-radius:10px;
-    border:1px solid #ddd;
-    margin-bottom:12px;
-}
-
-button{
-    width:100%;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    background:black;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
-}
-
-button:hover{
-    opacity:0.85;
 }
 
 </style>
@@ -160,8 +227,7 @@ button:hover{
 
     <div class="cart" onclick="toggleCart()">
         🛒 <span id="cartCount">0</span>
-
-        <div class="cart-dropdown" id="cartDropdown">
+        <div class="cart-dropdown">
             <div id="cartItems"></div>
             <div class="total">Summe: <span id="total">0€</span></div>
         </div>
@@ -169,100 +235,97 @@ button:hover{
 </div>
 
 
-<!-- SHOP -->
-<div class="shop">
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-text">
+        <h1>Die Zukunft<br>der Zahnpflege</h1>
+        <p>Minimalistisch. Leistungsstark. Entwickelt für Präzision.</p>
+    </div>
+    <img id="heroBrush" src="darktech.png">
+</section>
 
-    <!-- Zahnbürste -->
-    <div class="card">
-        <div class="image-box">
-            <img id="toothbrushImg" src="darktech.png">
-        </div>
+
+<!-- SHOP -->
+<section class="shop">
+
+    <div class="card" onclick="openProduct('Zahnbürste','darktech.png',79)">
+        <div class="image-box"><img src="darktech.png"></div>
         <h2>Zahnbürste</h2>
         <div class="price">79€</div>
-
-        <select id="styleSelect">
-            <option value="darktech">Dark Tech</option>
-            <option value="heroz">Hero Z</option>
-            <option value="mintchart">Mint Chart</option>
-            <option value="bluechart">Blue Chart</option>
-        </select>
-
-        <button onclick="addToCart('Zahnbürste',79)">In den Warenkorb</button>
+        <button onclick="event.stopPropagation();addToCart('Zahnbürste',79)">In den Warenkorb</button>
     </div>
 
-
-    <!-- Box -->
-    <div class="card">
-        <div class="image-box">
-            <img src="box.png">
-        </div>
+    <div class="card" onclick="openProduct('Box','box.png',99)">
+        <div class="image-box"><img src="box.png"></div>
         <h2>Box</h2>
         <div class="price">99€</div>
-        <button onclick="addToCart('Box',99)">In den Warenkorb</button>
+        <button onclick="event.stopPropagation();addToCart('Box',99)">In den Warenkorb</button>
     </div>
 
-
-    <!-- Bundle -->
-    <div class="card">
-        <div class="image-box">
-            <img src="bundle.png">
-        </div>
+    <div class="card" onclick="openProduct('Bundle','bundle.png',149)">
+        <div class="image-box"><img src="bundle.png"></div>
         <h2>Bundle</h2>
         <div class="price">149€</div>
-        <button onclick="addToCart('Bundle',149)">In den Warenkorb</button>
+        <button onclick="event.stopPropagation();addToCart('Bundle',149)">In den Warenkorb</button>
     </div>
 
+</section>
+
+
+<!-- PRODUCT MODAL -->
+<div class="overlay" id="overlay" onclick="closeProduct()">
+    <div class="product-modal" onclick="event.stopPropagation()">
+        <img id="modalImg">
+        <div>
+            <h2 id="modalTitle"></h2>
+            <p class="price" id="modalPrice"></p>
+            <button onclick="addToCartFromModal()">In den Warenkorb</button>
+        </div>
+    </div>
 </div>
 
 
 <script>
 
-/* Zahnbürstenbild wechseln */
-const select = document.getElementById("styleSelect");
-const img = document.getElementById("toothbrushImg");
+/* CART */
+let cart=[], total=0, modalItem=null;
 
-const images = {
-    darktech: "darktech.png",
-    heroz: "heroz.png",
-    mintchart: "mintchart.png",
-    bluechart: "bluechart.png"
-};
-
-select.addEventListener("change", () => {
-    img.src = images[select.value];
-});
-
-
-/* Warenkorb */
-let cart = [];
-let total = 0;
-
-function addToCart(name, price){
-    cart.push({name, price});
-    total += price;
+function addToCart(name,price){
+    cart.push({name,price});
+    total+=price;
     updateCart();
 }
 
 function updateCart(){
-    document.getElementById("cartCount").textContent = cart.length;
-
-    const items = document.getElementById("cartItems");
-    items.innerHTML = "";
-
-    cart.forEach(item=>{
-        items.innerHTML += `
-            <div class="cart-item">
-                <span>${item.name}</span>
-                <span>${item.price}€</span>
-            </div>
-        `;
+    document.getElementById("cartCount").textContent=cart.length;
+    const items=document.getElementById("cartItems");
+    items.innerHTML="";
+    cart.forEach(i=>{
+        items.innerHTML+=`<div class="cart-item"><span>${i.name}</span><span>${i.price}€</span></div>`;
     });
-
-    document.getElementById("total").textContent = total + "€";
+    document.getElementById("total").textContent=total+"€";
 }
 
 function toggleCart(){
     document.querySelector(".cart").classList.toggle("open");
+}
+
+/* PRODUCT MODAL */
+function openProduct(name,img,price){
+    modalItem={name,price};
+    document.getElementById("modalTitle").textContent=name;
+    document.getElementById("modalImg").src=img;
+    document.getElementById("modalPrice").textContent=price+"€";
+    document.getElementById("overlay").classList.add("open");
+}
+
+function closeProduct(){
+    document.getElementById("overlay").classList.remove("open");
+}
+
+function addToCartFromModal(){
+    addToCart(modalItem.name,modalItem.price);
+    closeProduct();
 }
 
 </script>
