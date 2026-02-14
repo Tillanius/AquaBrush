@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Aqua Brush</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -15,7 +14,6 @@ body{
     font-family:'Inter', sans-serif;
     background:#fff;
     color:#111;
-    overflow-x:hidden;
 }
 
 /* HEADER */
@@ -33,160 +31,10 @@ body{
     border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-.logo{
-    font-weight:200;
-    font-size:28px;
-}
+.logo{font-weight:200;font-size:28px;}
 
-.cart{
-    position:relative;
-    cursor:pointer;
-    font-size:20px;
-}
+.cart{position:relative;cursor:pointer;font-size:20px;}
 
-/* HERO SECTION */
-.hero{
-    height:88vh;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 8vw;
-    background:linear-gradient(180deg,#fff,#f6f6f6);
-}
-
-.hero-text h1{
-    font-size:64px;
-    font-weight:300;
-    margin:0;
-}
-
-.hero-text p{
-    color:#666;
-    font-size:20px;
-    margin-top:12px;
-}
-
-.hero img{
-    width:420px;
-    transition:1.2s cubic-bezier(.2,.8,.2,1);
-}
-
-.hero img:hover{
-    transform:scale(1.05) translateY(-8px);
-}
-
-/* SHOP GRID */
-.shop{
-    padding:80px 7vw;
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-    gap:40px;
-}
-
-/* CARD */
-.card{
-    background:white;
-    border-radius:28px;
-    padding:34px;
-    text-align:center;
-    transition:0.5s cubic-bezier(.2,.8,.2,1);
-    box-shadow:0 8px 30px rgba(0,0,0,0.04);
-    cursor:pointer;
-}
-
-.card:hover{
-    transform:translateY(-12px);
-    box-shadow:0 35px 80px rgba(0,0,0,0.10);
-}
-
-/* IMAGE ANIMATION */
-.image-box{
-    height:240px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:22px;
-}
-
-.image-box img{
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
-    transition:0.7s cubic-bezier(.2,.8,.2,1);
-}
-
-.card:hover img{
-    transform:scale(1.07) translateY(-6px);
-}
-
-/* TEXT */
-h2{
-    font-weight:400;
-    margin:0;
-    font-size:22px;
-}
-
-.price{
-    color:#6e6e73;
-    margin:12px 0 18px;
-}
-
-/* BUTTON LUXUS */
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:18px;
-    background:black;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 15px 40px rgba(0,0,0,0.25);
-}
-
-/* PRODUCT OVERLAY */
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    backdrop-filter: blur(10px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:200;
-}
-
-.overlay.open{
-    display:flex;
-}
-
-.product-modal{
-    width:900px;
-    max-width:90%;
-    background:white;
-    border-radius:30px;
-    padding:50px;
-    display:flex;
-    gap:50px;
-    animation:fadeUp .5s cubic-bezier(.2,.8,.2,1);
-}
-
-.product-modal img{
-    width:300px;
-    object-fit:contain;
-}
-
-@keyframes fadeUp{
-    from{opacity:0; transform:translateY(30px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-/* CART DROPDOWN */
 .cart-dropdown{
     position:absolute;
     right:0;
@@ -198,22 +46,100 @@ button:hover{
     padding:20px;
     display:none;
 }
+.cart.open .cart-dropdown{display:block;}
 
-.cart.open .cart-dropdown{
-    display:block;
-}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;}
+.total{border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-weight:500;}
 
-.cart-item{
+/* HERO */
+.hero{
+    height:88vh;
     display:flex;
+    align-items:center;
     justify-content:space-between;
-    margin-bottom:10px;
+    padding:0 8vw;
+    background:linear-gradient(180deg,#fff,#f6f6f6);
+}
+.hero-text h1{font-size:64px;font-weight:300;margin:0;}
+.hero-text p{color:#666;font-size:20px;margin-top:12px;}
+.hero img{width:420px;transition:1.2s cubic-bezier(.2,.8,.2,1);}
+.hero img:hover{transform:scale(1.05) translateY(-8px);}
+
+/* SHOP */
+.shop{
+    padding:80px 7vw;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap:40px;
 }
 
-.total{
-    border-top:1px solid #eee;
-    padding-top:12px;
-    margin-top:12px;
-    font-weight:500;
+.card{
+    background:white;
+    border-radius:28px;
+    padding:34px;
+    text-align:center;
+    transition:.5s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 8px 30px rgba(0,0,0,0.04);
+    cursor:pointer;
+}
+.card:hover{transform:translateY(-12px);box-shadow:0 35px 80px rgba(0,0,0,0.10);}
+
+.image-box{height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
+.image-box img{max-width:100%;max-height:100%;object-fit:contain;transition:.7s;}
+.card:hover img{transform:scale(1.07) translateY(-6px);}
+
+h2{font-weight:400;margin:0;font-size:22px;}
+.price{color:#6e6e73;margin:12px 0 18px;}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    background:black;
+    color:white;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,0,0,0.25);}
+
+select{
+    padding:12px;
+    width:100%;
+    border-radius:12px;
+    border:1px solid #e2e2e2;
+    margin-top:10px;
+}
+
+/* MODAL */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter: blur(10px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:200;
+}
+.overlay.open{display:flex;}
+
+.product-modal{
+    width:900px;
+    max-width:92%;
+    background:white;
+    border-radius:30px;
+    padding:50px;
+    display:flex;
+    gap:50px;
+    animation:fadeUp .5s cubic-bezier(.2,.8,.2,1);
+}
+.product-modal img{width:320px;object-fit:contain;}
+
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 </style>
@@ -234,56 +160,66 @@ button:hover{
     </div>
 </div>
 
-
 <!-- HERO -->
 <section class="hero">
     <div class="hero-text">
         <h1>Die Zukunft<br>der Zahnpflege</h1>
         <p>Wasser. Feedback. Streaks.</p>
     </div>
-    <img id="heroBrush" src="darktech.png">
+    <img src="darktech.png">
 </section>
-
 
 <!-- SHOP -->
 <section class="shop">
 
-    <div class="card" onclick="openProduct('Zahnbürste','darktech.png',79)">
-        <div class="image-box"><img src="darktech.png"></div>
-        <h2>Zahnbürste</h2>
-        <div class="price">79€</div>
-        <button onclick="event.stopPropagation();addToCart('Zahnbürste',79)">In den Warenkorb</button>
-    </div>
+<div class="card" onclick="openProduct('Zahnbürste','darktech.png',79)">
+    <div class="image-box"><img src="darktech.png"></div>
+    <h2>Zahnbürste</h2>
+    <div class="price">79€</div>
+    <button onclick="event.stopPropagation();addToCart('Zahnbürste',79)">In den Warenkorb</button>
+</div>
 
-    <div class="card" onclick="openProduct('Box','box.png',99)">
-        <div class="image-box"><img src="box.png"></div>
-        <h2>Box</h2>
-        <div class="price">99€</div>
-        <button onclick="event.stopPropagation();addToCart('Box',99)">In den Warenkorb</button>
-    </div>
+<div class="card" onclick="openProduct('Box','box.png',99)">
+    <div class="image-box"><img src="box.png"></div>
+    <h2>Box</h2>
+    <div class="price">99€</div>
+    <button onclick="event.stopPropagation();addToCart('Box',99)">In den Warenkorb</button>
+</div>
 
-    <div class="card" onclick="openProduct('Bundle','bundle.png',149)">
-        <div class="image-box"><img src="bundle.png"></div>
-        <h2>Bundle</h2>
-        <div class="price">149€</div>
-        <button onclick="event.stopPropagation();addToCart('Bundle',149)">In den Warenkorb</button>
-    </div>
+<div class="card" onclick="openProduct('Bundle','bundle.png',149)">
+    <div class="image-box"><img src="bundle.png"></div>
+    <h2>Bundle</h2>
+    <div class="price">149€</div>
+    <button onclick="event.stopPropagation();addToCart('Bundle',149)">In den Warenkorb</button>
+</div>
 
 </section>
 
-
-<!-- PRODUCT MODAL -->
+<!-- MODAL -->
 <div class="overlay" id="overlay" onclick="closeProduct()">
-    <div class="product-modal" onclick="event.stopPropagation()">
-        <img id="modalImg">
-        <div>
-            <h2 id="modalTitle"></h2>
-            <p class="price" id="modalPrice"></p>
-            <button onclick="addToCartFromModal()">In den Warenkorb</button>
-        </div>
+<div class="product-modal" onclick="event.stopPropagation()">
+
+<img id="modalImg">
+
+<div>
+    <h2 id="modalTitle"></h2>
+    <p class="price" id="modalPrice"></p>
+
+    <!-- STYLE AUSWAHL -->
+    <div id="styleWrap" style="display:none; margin:15px 0;">
+        <select id="styleSelectModal">
+            <option value="darktech">Dark Tech</option>
+            <option value="heroz">Hero Z</option>
+            <option value="mintchart">Mint Chart</option>
+            <option value="bluechart">Blue Chart</option>
+        </select>
     </div>
+
+    <button onclick="addToCartFromModal()">In den Warenkorb</button>
 </div>
 
+</div>
+</div>
 
 <script>
 
@@ -310,12 +246,19 @@ function toggleCart(){
     document.querySelector(".cart").classList.toggle("open");
 }
 
-/* PRODUCT MODAL */
+/* MODAL */
 function openProduct(name,img,price){
-    modalItem={name,price};
+    modalItem={name,price,style:null};
     document.getElementById("modalTitle").textContent=name;
     document.getElementById("modalImg").src=img;
     document.getElementById("modalPrice").textContent=price+"€";
+
+    if(name==="Zahnbürste"){
+        document.getElementById("styleWrap").style.display="block";
+    }else{
+        document.getElementById("styleWrap").style.display="none";
+    }
+
     document.getElementById("overlay").classList.add("open");
 }
 
@@ -323,8 +266,26 @@ function closeProduct(){
     document.getElementById("overlay").classList.remove("open");
 }
 
+/* STYLE CHANGE */
+const brushImages={
+    darktech:"darktech.png",
+    heroz:"heroz.png",
+    mintchart:"mintchart.png",
+    bluechart:"bluechart.png"
+};
+
+document.getElementById("styleSelectModal").addEventListener("change",function(){
+    const val=this.value;
+    document.getElementById("modalImg").src=brushImages[val];
+    modalItem.style=this.options[this.selectedIndex].text;
+});
+
 function addToCartFromModal(){
-    addToCart(modalItem.name,modalItem.price);
+    if(modalItem.style){
+        addToCart(modalItem.name+" – "+modalItem.style,modalItem.price);
+    }else{
+        addToCart(modalItem.name,modalItem.price);
+    }
     closeProduct();
 }
 
