@@ -3,45 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aqua Brush Shop</title>
+
+<title>Aqua Brush</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
 <style>
+
 body{
-    font-family: Arial, sans-serif;
-    background:#f2f2f2;
     margin:0;
-    padding:40px;
+    font-family:'Inter', sans-serif;
+    background:#f5f5f7;
+    color:#111;
 }
 
-h1{
-    font-weight:300;
-}
-
-.shop{
+/* HEADER */
+.header{
+    background:white;
+    height:70px;
+    padding:0 50px;
     display:flex;
-    gap:40px;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 1px 0 rgba(0,0,0,0.06);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-weight:200;
+    font-size:26px;
+    letter-spacing:1px;
+}
+
+.cart{
+    position:relative;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* DROPDOWN */
+.cart-dropdown{
+    position:absolute;
+    right:0;
+    top:40px;
+    width:280px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    padding:18px;
+    display:none;
+}
+
+.cart.open .cart-dropdown{
+    display:block;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.total{
+    border-top:1px solid #eee;
+    padding-top:10px;
+    margin-top:10px;
+    font-weight:500;
+}
+
+/* SHOP GRID */
+.shop{
+    padding:60px 50px;
+    display:flex;
+    gap:50px;
     flex-wrap:wrap;
 }
 
+/* CARD */
 .card{
-    width:260px;
+    width:280px;
     background:white;
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    border-radius:22px;
+    padding:30px;
     text-align:center;
+    transition:0.25s;
+    box-shadow:0 10px 35px rgba(0,0,0,0.05);
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 50px rgba(0,0,0,0.08);
 }
 
 .image-box{
-    width:200px;
-    height:200px;
-    margin:0 auto 15px;
-    background:#eee;
-    border-radius:12px;
+    width:220px;
+    height:220px;
+    margin:0 auto 20px;
+    background:#f1f1f1;
+    border-radius:18px;
+    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
 }
 
 .image-box img{
@@ -50,39 +116,60 @@ h1{
     object-fit:cover;
 }
 
-select, button{
+h2{
+    font-weight:400;
+    margin:10px 0 6px;
+}
+
+.price{
+    color:#666;
+    margin-bottom:15px;
+}
+
+select{
     padding:10px;
-    margin-top:10px;
-    border-radius:8px;
-    border:1px solid #ccc;
     width:100%;
-    font-size:15px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    margin-bottom:12px;
 }
 
 button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
     background:black;
     color:white;
-    border:none;
+    font-size:15px;
     cursor:pointer;
-    margin-top:12px;
 }
 
 button:hover{
     opacity:0.85;
 }
 
-.cart{
-    margin-top:10px;
-    font-size:14px;
-    font-weight:bold;
-}
 </style>
 </head>
 
 <body>
 
-<h1>Aqua Brush</h1>
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">Aqua Brush</div>
 
+    <div class="cart" onclick="toggleCart()">
+        🛒 <span id="cartCount">0</span>
+
+        <div class="cart-dropdown" id="cartDropdown">
+            <div id="cartItems"></div>
+            <div class="total">Summe: <span id="total">0€</span></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- SHOP -->
 <div class="shop">
 
     <!-- Zahnbürste -->
@@ -90,8 +177,8 @@ button:hover{
         <div class="image-box">
             <img id="toothbrushImg" src="darktech.png">
         </div>
-
         <h2>Zahnbürste</h2>
+        <div class="price">79€</div>
 
         <select id="styleSelect">
             <option value="darktech">Dark Tech</option>
@@ -100,8 +187,7 @@ button:hover{
             <option value="bluechart">Blue Chart</option>
         </select>
 
-        <button>Auswahl ✓</button>
-        <div class="cart">In den Warenkorb</div>
+        <button onclick="addToCart('Zahnbürste',79)">In den Warenkorb</button>
     </div>
 
 
@@ -111,8 +197,10 @@ button:hover{
             <img src="box.png">
         </div>
         <h2>Box</h2>
-        <div class="cart">In den Warenkorb</div>
+        <div class="price">99€</div>
+        <button onclick="addToCart('Box',99)">In den Warenkorb</button>
     </div>
+
 
     <!-- Bundle -->
     <div class="card">
@@ -120,13 +208,16 @@ button:hover{
             <img src="bundle.png">
         </div>
         <h2>Bundle</h2>
-        <div class="cart">In den Warenkorb</div>
+        <div class="price">149€</div>
+        <button onclick="addToCart('Bundle',149)">In den Warenkorb</button>
     </div>
 
 </div>
 
 
 <script>
+
+/* Zahnbürstenbild wechseln */
 const select = document.getElementById("styleSelect");
 const img = document.getElementById("toothbrushImg");
 
@@ -140,6 +231,40 @@ const images = {
 select.addEventListener("change", () => {
     img.src = images[select.value];
 });
+
+
+/* Warenkorb */
+let cart = [];
+let total = 0;
+
+function addToCart(name, price){
+    cart.push({name, price});
+    total += price;
+    updateCart();
+}
+
+function updateCart(){
+    document.getElementById("cartCount").textContent = cart.length;
+
+    const items = document.getElementById("cartItems");
+    items.innerHTML = "";
+
+    cart.forEach(item=>{
+        items.innerHTML += `
+            <div class="cart-item">
+                <span>${item.name}</span>
+                <span>${item.price}€</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("total").textContent = total + "€";
+}
+
+function toggleCart(){
+    document.querySelector(".cart").classList.toggle("open");
+}
+
 </script>
 
 </body>
