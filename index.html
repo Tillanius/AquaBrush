@@ -1,52 +1,146 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>CleanBrush</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aqua Brush Shop</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+    padding:40px;
+}
+
+h1{
+    font-weight:300;
+}
+
+.shop{
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:260px;
+    background:white;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+.image-box{
+    width:200px;
+    height:200px;
+    margin:0 auto 15px;
+    background:#eee;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.image-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+select, button{
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    width:100%;
+    font-size:15px;
+}
+
+button{
+    background:black;
+    color:white;
+    border:none;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+button:hover{
+    opacity:0.85;
+}
+
+.cart{
+    margin-top:10px;
+    font-size:14px;
+    font-weight:bold;
+}
+</style>
 </head>
 
 <body>
 
-<h1>CleanBrush</h1>
-<p>🛒 0</p>
+<h1>Aqua Brush</h1>
 
-<hr>
+<div class="shop">
 
-<table border="1" cellpadding="20">
-  <tr>
+    <!-- Zahnbürste -->
+    <div class="card">
+        <div class="image-box">
+            <img id="toothbrushImg" src="darktech.png">
+        </div>
 
-    <!-- Produkt 1 -->
-    <td align="center">
-      <img src="images/toothbrush-hero.jpg" alt="Zahnbürste" width="200"><br><br>
+        <h2>Zahnbürste</h2>
 
-      <h2>
-        <a href="https://tillanius.github.io/CleanBrush/">
-          Zahnbürste
-        </a>
-      </h2>
+        <select id="styleSelect">
+            <option value="darktech">Dark Tech</option>
+            <option value="heroz">Hero Z</option>
+            <option value="mintchart">Mint Chart</option>
+            <option value="bluechart">Blue Chart</option>
+        </select>
 
-      <p><strong>79 €</strong></p>
+        <button>Auswahl ✓</button>
+        <div class="cart">In den Warenkorb</div>
+    </div>
 
-      <form>
-        <button type="button">In den Warenkorb</button>
-      </form>
-    </td>
 
-    <!-- Produkt 2 -->
-    <td align="center">
-      <img src="images/bundle.jpg" alt="Ladebox" width="200"><br><br>
+    <!-- Box -->
+    <div class="card">
+        <div class="image-box">
+            <img src="box.png">
+        </div>
+        <h2>Box</h2>
+        <div class="cart">In den Warenkorb</div>
+    </div>
 
-      <h2>Ladebox</h2>
+    <!-- Bundle -->
+    <div class="card">
+        <div class="image-box">
+            <img src="bundle.png">
+        </div>
+        <h2>Bundle</h2>
+        <div class="cart">In den Warenkorb</div>
+    </div>
 
-      <p><strong>149 €</strong></p>
+</div>
 
-      <form>
-        <button type="button">In den Warenkorb</button>
-      </form>
-    </td>
 
-  </tr>
-</table>
+<script>
+const select = document.getElementById("styleSelect");
+const img = document.getElementById("toothbrushImg");
+
+const images = {
+    darktech: "darktech.png",
+    heroz: "heroz.png",
+    mintchart: "mintchart.png",
+    bluechart: "bluechart.png"
+};
+
+select.addEventListener("change", () => {
+    img.src = images[select.value];
+});
+</script>
 
 </body>
 </html>
