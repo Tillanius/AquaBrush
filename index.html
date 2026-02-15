@@ -3,312 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aqua Brush</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<title>Aquabrush</title>
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-    margin:0;
-    font-family:'Inter', sans-serif;
-    background:#fff;
-    color:#111;
+    font-family:Inter,Arial,sans-serif;
+    background:#0b0f17;
+    color:white;
 }
 
-/* HEADER */
-.header{
-    backdrop-filter: blur(16px);
-    background:rgba(255,255,255,0.75);
-    height:70px;
-    padding:0 60px;
+/* TOPBAR */
+.topbar{
+    background:white;
+    color:black;
+    padding:18px 40px;
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    position:sticky;
-    top:0;
-    z-index:100;
-    border-bottom:1px solid rgba(0,0,0,0.05);
+    align-items:center;
+    font-weight:300;
 }
-.logo{font-weight:200;font-size:28px;}
-.cart{position:relative;cursor:pointer;font-size:20px;}
+.logo{
+    font-size:22px;
+    letter-spacing:2px;
+    font-weight:300;
+}
+.cart{
+    position:relative;
+    cursor:pointer;
+    font-size:20px;
+}
+.cart-count{
+    position:absolute;
+    top:-8px;
+    right:-10px;
+    background:#111;
+    color:white;
+    border-radius:50%;
+    padding:2px 6px;
+    font-size:12px;
+}
 
+/* CART DROPDOWN */
 .cart-dropdown{
     position:absolute;
-    right:0;
-    top:40px;
-    width:320px;
+    right:40px;
+    top:70px;
+    width:280px;
     background:white;
-    border-radius:20px;
-    box-shadow:0 30px 70px rgba(0,0,0,0.2);
+    color:black;
+    border-radius:14px;
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
     padding:20px;
     display:none;
+    z-index:5;
 }
-.cart.open .cart-dropdown{display:block;}
-.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;}
-.total{border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-weight:500;}
+.cart-dropdown h3{
+    margin-bottom:10px;
+    font-weight:400;
+}
+.cart-item{
+    font-size:14px;
+    padding:6px 0;
+    border-bottom:1px solid #eee;
+}
 
-/* HERO */
-.hero{
-    height:88vh;
+/* MAIN */
+.wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:70px 40px;
     display:flex;
+    gap:70px;
     align-items:center;
-    justify-content:space-between;
-    padding:0 8vw;
-    background:linear-gradient(180deg,#fff,#f6f6f6);
-}
-.hero-text h1{font-size:64px;font-weight:300;margin:0;}
-.hero-text p{color:#666;font-size:20px;margin-top:12px;}
-.hero img{
-    width:420px;
-    transition:.5s ease;
 }
 
-/* SHOP */
-.shop{
-    padding:80px 7vw;
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-    gap:40px;
-}
-
-.card{
-    background:white;
-    border-radius:28px;
-    padding:34px;
+/* IMAGE */
+.product-img{
+    flex:1;
     text-align:center;
-    transition:.5s cubic-bezier(.2,.8,.2,1);
-    box-shadow:0 8px 30px rgba(0,0,0,0.04);
+}
+.product-img img{
+    width:100%;
+    max-width:460px;
+    transition:.35s;
 }
 
-/* PRODUCT IMAGE BOX */
-.image-box{
-    height:260px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:22px;
-    perspective:1000px;
-}
-.image-box img{
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
-    transition:transform .2s ease, opacity .4s ease;
-}
-
-/* CONFIGURATOR */
+/* CONFIG */
 .config{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:16px;
-    margin-bottom:18px;
+    flex:1;
+}
+h1{
+    font-size:42px;
+    font-weight:300;
+    margin-bottom:10px;
+}
+.price{
+    font-size:26px;
+    color:#b8c4ff;
+    margin-bottom:30px;
 }
 
-.option{
-    border:1px solid #e4e4e4;
-    padding:14px;
-    border-radius:16px;
+/* PRODUCT SELECT */
+.products{
+    display:flex;
+    gap:12px;
+    margin-bottom:25px;
+}
+.product{
+    padding:12px 18px;
+    border:1px solid #333;
+    border-radius:10px;
     cursor:pointer;
-    transition:.25s;
-    background:#fafafa;
-    text-align:left;
-    position:relative;
+    transition:.2s;
+}
+.product.active{
+    border-color:white;
+    background:#151a26;
 }
 
-.option:hover{border-color:#000;}
-
-.option.active{
-    border:2px solid #000;
-    background:#fff;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+/* COLORS */
+.colors{
+    display:flex;
+    gap:12px;
+    margin-bottom:30px;
 }
-
-.dot{
-    width:18px;height:18px;border-radius:50%;
-    display:inline-block;margin-right:8px;
-    vertical-align:middle;
+.color{
+    padding:12px 18px;
+    border:1px solid #333;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
 }
-
-.selected{
-    position:absolute;
-    right:12px;
-    top:10px;
-    font-size:11px;
-    color:#000;
-    opacity:.6;
+.color.active{
+    border-color:white;
+    background:#151a26;
 }
 
 /* BUTTON */
 button{
     width:100%;
-    padding:15px;
+    padding:18px;
+    background:white;
+    color:black;
     border:none;
-    border-radius:18px;
-    background:black;
-    color:white;
-    font-size:15px;
+    border-radius:12px;
+    font-size:18px;
     cursor:pointer;
-    transition:.3s;
+    transition:.25s;
 }
-button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,0,0,0.25);}
-
-.price{
-    color:#6e6e73;
-    margin:12px 0 18px;
+button:hover{
+    transform:translateY(-2px);
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <div class="logo">Aqua Brush</div>
-
+<!-- TOPBAR -->
+<div class="topbar">
+    <div class="logo">AQUABRUSH</div>
     <div class="cart" onclick="toggleCart()">
-        🛒 <span id="cartCount">0</span>
-        <div class="cart-dropdown">
-            <div id="cartItems"></div>
-            <div class="total">Summe: <span id="total">0€</span></div>
-        </div>
+        🛒
+        <div class="cart-count" id="cartCount">0</div>
     </div>
 </div>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-text">
-        <h1>Die Zukunft<br>der Zahnpflege</h1>
-        <p>Wasser. Feedback. Streaks.</p>
+<div class="cart-dropdown" id="cartBox">
+    <h3>Warenkorb</h3>
+    <div id="cartItems"></div>
+</div>
+
+<!-- MAIN -->
+<div class="wrapper">
+
+    <div class="product-img">
+        <img id="productImage" src="https://via.placeholder.com/400x600?text=Toothbrush">
     </div>
-    <img id="heroImg" src="darktech.png">
-</section>
-
-<!-- SHOP -->
-<section class="shop">
-
-<div class="card">
-
-    <div class="image-box" id="tiltBox">
-        <img id="brushImg" src="darktech.png">
-    </div>
-
-    <h2>Zahnbürste</h2>
-    <div class="price" id="price">79€</div>
 
     <div class="config">
 
-        <div class="option active" data-model="darktech">
-            <span class="dot" style="background:#111"></span>
-            Dark Tech
-            <span class="selected">Ausgewählt</span>
+        <h1>Aquabrush</h1>
+        <div class="price" id="price">79€</div>
+
+        <!-- PRODUKT -->
+        <div class="products">
+            <div class="product active" onclick="selectProduct('brush',79)">Zahnbürste</div>
+            <div class="product" onclick="selectProduct('box',99)">Box</div>
+            <div class="product" onclick="selectProduct('bundle',149)">Bundle</div>
         </div>
 
-        <div class="option" data-model="heroz">
-            <span class="dot" style="background:#d9d9d9"></span>
-            Hero Z
+        <!-- COLORS -->
+        <div class="colors" id="colorOptions">
+            <div class="color active" onclick="selectColor('dark')">Dark Tech</div>
+            <div class="color" onclick="selectColor('hero')">Hero Z</div>
+            <div class="color" onclick="selectColor('mint')">Mint Chart</div>
+            <div class="color" onclick="selectColor('blue')">Blue Chart</div>
         </div>
 
-        <div class="option" data-model="mintchart">
-            <span class="dot" style="background:#a8e6cf"></span>
-            Mint Chart
-        </div>
-
-        <div class="option" data-model="bluechart">
-            <span class="dot" style="background:#a8caff"></span>
-            Blue Chart
-        </div>
+        <button onclick="addToCart()">In den Warenkorb</button>
 
     </div>
-
-    <button onclick="addBrush()">In den Warenkorb</button>
-
 </div>
-
-</section>
 
 <script>
 
-/* MODEL IMAGES */
-const brushImages={
-    darktech:"darktech.png",
-    heroz:"heroz.png",
-    mintchart:"mintchart.png",
-    bluechart:"bluechart.png"
-};
+let currentProduct="brush";
+let currentColor="dark";
+let cart=[];
 
-let selectedModel="darktech";
+const img=document.getElementById("productImage");
 
-const brushImg=document.getElementById("brushImg");
-const heroImg=document.getElementById("heroImg");
+function selectProduct(type,price){
+    currentProduct=type;
+    document.getElementById("price").innerText=price+"€";
 
-/* CLICK SELECTION */
-document.querySelectorAll(".option").forEach(btn=>{
-    btn.addEventListener("click",()=>{
+    document.querySelectorAll(".product").forEach(p=>p.classList.remove("active"));
+    event.target.classList.add("active");
 
-        document.querySelectorAll(".option").forEach(o=>{
-            o.classList.remove("active");
-            const s=o.querySelector(".selected");
-            if(s) s.remove();
-        });
+    // Farben nur bei Zahnbürste sichtbar
+    document.getElementById("colorOptions").style.display =
+        type==="brush" ? "flex" : "none";
 
-        btn.classList.add("active");
-
-        const label=document.createElement("span");
-        label.className="selected";
-        label.textContent="Ausgewählt";
-        btn.appendChild(label);
-
-        selectedModel=btn.dataset.model;
-
-        brushImg.style.opacity=0;
-        heroImg.style.opacity=0;
-
-        setTimeout(()=>{
-            brushImg.src=brushImages[selectedModel];
-            heroImg.src=brushImages[selectedModel];
-            brushImg.style.opacity=1;
-            heroImg.style.opacity=1;
-        },200);
-    });
-});
-
-/* 3D TILT EFFECT */
-const box=document.getElementById("tiltBox");
-box.addEventListener("mousemove",(e)=>{
-    const r=box.getBoundingClientRect();
-    const x=e.clientX-r.left;
-    const y=e.clientY-r.top;
-    const rx=(y/r.height-0.5)*10;
-    const ry=(x/r.width-0.5)*-10;
-    brushImg.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) scale(1.05)`;
-});
-box.addEventListener("mouseleave",()=>{
-    brushImg.style.transform="rotateX(0) rotateY(0) scale(1)";
-});
-
-/* CART */
-let cart=[], total=0;
-
-function addBrush(){
-    const label=document.querySelector(".option.active").textContent.trim();
-    cart.push({name:"Zahnbürste – "+label,price:79});
-    total+=79;
-    updateCart();
+    updateImage();
 }
 
-function updateCart(){
-    document.getElementById("cartCount").textContent=cart.length;
-    const items=document.getElementById("cartItems");
-    items.innerHTML="";
-    cart.forEach(i=>{
-        items.innerHTML+=`<div class="cart-item"><span>${i.name}</span><span>${i.price}€</span></div>`;
-    });
-    document.getElementById("total").textContent=total+"€";
+function selectColor(color){
+    currentColor=color;
+    document.querySelectorAll(".color").forEach(c=>c.classList.remove("active"));
+    event.target.classList.add("active");
+    updateImage();
+}
+
+function updateImage(){
+    if(currentProduct==="brush"){
+        img.src="https://via.placeholder.com/400x600?text="+currentColor;
+    }
+    if(currentProduct==="box"){
+        img.src="https://via.placeholder.com/400x600?text=Box";
+    }
+    if(currentProduct==="bundle"){
+        img.src="https://via.placeholder.com/400x600?text=Bundle";
+    }
+}
+
+function addToCart(){
+    let name="Zahnbürste";
+    if(currentProduct==="box") name="Box";
+    if(currentProduct==="bundle") name="Bundle";
+    if(currentProduct==="brush") name+=" ("+currentColor+")";
+
+    cart.push(name);
+    document.getElementById("cartCount").innerText=cart.length;
+
+    const div=document.createElement("div");
+    div.className="cart-item";
+    div.innerText=name;
+    document.getElementById("cartItems").appendChild(div);
 }
 
 function toggleCart(){
-    document.querySelector(".cart").classList.toggle("open");
+    const box=document.getElementById("cartBox");
+    box.style.display=box.style.display==="block"?"none":"block";
 }
+
 </script>
 
 </body>
