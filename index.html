@@ -13,6 +13,7 @@ body{
     font-family:'Inter', sans-serif;
     background:#fff;
     color:#111;
+    overflow-x:hidden;
 }
 
 /* HEADER */
@@ -30,7 +31,6 @@ body{
     border-bottom:1px solid rgba(0,0,0,0.05);
 }
 .logo{font-weight:200;font-size:28px;}
-.cart{cursor:pointer}
 
 /* HERO */
 .hero{
@@ -57,46 +57,80 @@ body{
     border-radius:28px;
     padding:34px;
     text-align:center;
-    transition:.3s;
+    transition:.45s cubic-bezier(.2,.8,.2,1);
     box-shadow:0 8px 30px rgba(0,0,0,0.04);
     cursor:pointer;
 }
-.card:hover{transform:translateY(-8px);}
-
+.card:hover{transform:translateY(-12px);box-shadow:0 35px 80px rgba(0,0,0,0.10);}
 .image-box{height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
 .image-box img{max-width:100%;max-height:100%;object-fit:contain;}
-
-h2{font-weight:400;margin:0;font-size:22px;}
-.price{color:#6e6e73;margin:12px 0 18px;}
+.price{color:#6e6e73;margin-top:10px;}
 
 /* PRODUCT PAGE */
 .product-page{
+    position:fixed;
+    inset:0;
+    background:white;
+    z-index:999;
     display:none;
-    padding:100px 10vw;
+    opacity:0;
+    transform:translateY(30px);
+    transition:.5s cubic-bezier(.2,.8,.2,1);
 }
-.product-layout{
+.product-page.active{
+    display:block;
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* PRODUCT LAYOUT */
+.product-wrap{
     display:flex;
-    gap:80px;
+    gap:90px;
+    padding:110px 10vw;
     align-items:center;
 }
-.product-layout img{
-    width:420px;
+.product-img img{
+    width:460px;
+    transition:.4s;
 }
 .product-info h1{
-    font-size:48px;
+    font-size:52px;
     font-weight:300;
+    margin:0;
 }
 .product-info p{
-    font-size:18px;
     color:#555;
-    margin:20px 0;
+    font-size:18px;
     max-width:500px;
+    margin:20px 0;
 }
-.back{
-    margin-bottom:40px;
+.price-big{
+    font-size:28px;
+    margin-bottom:25px;
+}
+
+/* CONFIGURATOR */
+.config{
+    display:flex;
+    gap:12px;
+    margin:25px 0;
+    flex-wrap:wrap;
+}
+.option{
+    padding:12px 18px;
+    border:1px solid #ddd;
+    border-radius:12px;
     cursor:pointer;
-    color:#777;
+    transition:.25s;
+    font-size:14px;
 }
+.option.active{
+    border-color:black;
+    background:#f4f4f4;
+}
+
+/* BUTTONS */
 button{
     padding:16px 28px;
     border:none;
@@ -106,17 +140,23 @@ button{
     font-size:16px;
     cursor:pointer;
 }
+.back{
+    position:absolute;
+    top:90px;
+    left:10vw;
+    cursor:pointer;
+    color:#777;
+}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div class="logo">Aqua Brush</div>
 </div>
 
-<!-- SHOP CONTENT -->
+<!-- SHOP -->
 <div id="shopView">
 
 <section class="hero">
@@ -128,7 +168,6 @@ button{
 </section>
 
 <section class="shop">
-
 <div class="card" onclick="openProduct('brush')">
     <div class="image-box"><img src="darktech.png"></div>
     <h2>Zahnbürste</h2>
@@ -146,63 +185,94 @@ button{
     <h2>Bundle</h2>
     <div class="price">149€</div>
 </div>
-
 </section>
+
 </div>
 
 <!-- PRODUCT PAGE -->
-<div class="product-page" id="productView">
+<div class="product-page" id="productPage">
 
-<div class="back" onclick="goBack()">← Zurück</div>
+<div class="back" onclick="closeProduct()">← Zurück</div>
 
-<div class="product-layout">
-    <img id="productImage" src="">
-    <div class="product-info">
-        <h1 id="productTitle"></h1>
-        <p id="productDesc"></p>
-        <div class="price" id="productPrice"></div>
-        <button>In den Warenkorb</button>
-    </div>
+<div class="product-wrap">
+
+<div class="product-img">
+    <img id="pImg" src="">
 </div>
 
+<div class="product-info">
+    <h1 id="pTitle"></h1>
+    <p id="pDesc"></p>
+    <div class="price-big" id="pPrice"></div>
+
+    <!-- CONFIGURATOR -->
+    <div class="config" id="configBox"></div>
+
+    <button>In den Warenkorb</button>
+</div>
+
+</div>
 </div>
 
 <script>
 
-const products={
+const productData={
     brush:{
-        title:"Aqua Brush Zahnbürste",
+        title:"Aqua Brush",
         price:"79€",
+        desc:"Intelligente Zahnbürste mit Wasser-Feedback, Tracking und Premium-Design.",
         img:"darktech.png",
-        desc:"Die intelligente Zahnbürste mit Wasser-Feedback, App-Tracking und modernem Design."
+        colors:{
+            "Dark Tech":"darktech.png",
+            "Hero Z":"heroz.png",
+            "Mint Chart":"mintchart.png",
+            "Blue Chart":"bluechart.png"
+        }
     },
     box:{
         title:"Aqua Brush Box",
         price:"99€",
-        img:"box.png",
-        desc:"Die Premium-Ladestation mit UV-Reinigung und magnetischer Docking-Technologie."
+        desc:"UV-Reinigung, Dockingstation und Premium-Ladetechnologie.",
+        img:"box.png"
     },
     bundle:{
         title:"Aqua Brush Bundle",
         price:"149€",
-        img:"bundle.png",
-        desc:"Zahnbürste + Box im Bundle. Spare Geld und starte direkt mit dem kompletten Setup."
+        desc:"Zahnbürste + Box im Bundle zum Vorteilspreis.",
+        img:"bundle.png"
     }
 };
 
 function openProduct(id){
-    document.getElementById("shopView").style.display="none";
-    document.getElementById("productView").style.display="block";
+    const p=productData[id];
 
-    document.getElementById("productTitle").innerText=products[id].title;
-    document.getElementById("productDesc").innerText=products[id].desc;
-    document.getElementById("productPrice").innerText=products[id].price;
-    document.getElementById("productImage").src=products[id].img;
+    document.getElementById("pTitle").innerText=p.title;
+    document.getElementById("pDesc").innerText=p.desc;
+    document.getElementById("pPrice").innerText=p.price;
+    document.getElementById("pImg").src=p.img;
+
+    const config=document.getElementById("configBox");
+    config.innerHTML="";
+
+    if(p.colors){
+        Object.keys(p.colors).forEach((name,i)=>{
+            const div=document.createElement("div");
+            div.className="option"+(i===0?" active":"");
+            div.innerText=name;
+            div.onclick=()=>{
+                document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+                div.classList.add("active");
+                document.getElementById("pImg").src=p.colors[name];
+            };
+            config.appendChild(div);
+        });
+    }
+
+    document.getElementById("productPage").classList.add("active");
 }
 
-function goBack(){
-    document.getElementById("shopView").style.display="block";
-    document.getElementById("productView").style.display="none";
+function closeProduct(){
+    document.getElementById("productPage").classList.remove("active");
 }
 
 </script>
