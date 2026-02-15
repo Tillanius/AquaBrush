@@ -4,143 +4,227 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aqua Brush</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Inter,sans-serif;background:#fff;color:#111}
-
-/* HEADER */
-.header{
-    backdrop-filter:blur(16px);
-    background:rgba(255,255,255,0.75);
-    height:70px;padding:0 60px;
-    display:flex;align-items:center;justify-content:space-between;
-    position:sticky;top:0;z-index:100;
-    border-bottom:1px solid rgba(0,0,0,0.05);
-}
-.logo{font-weight:200;font-size:28px;}
-.cart{position:relative;cursor:pointer;font-size:20px}
-.cart-count{
-    position:absolute;top:-6px;right:-10px;
-    background:black;color:white;border-radius:50%;
-    padding:2px 7px;font-size:12px;
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro",Arial,sans-serif;
+background:#f5f5f7;
+color:#111;
 }
 
-/* CART */
-.cart-box{
-    position:absolute;right:0;top:35px;width:300px;
-    background:white;border-radius:16px;
-    box-shadow:0 20px 60px rgba(0,0,0,.2);
-    padding:18px;display:none;
+/* NAV */
+nav{
+background:#fff;
+padding:16px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid #eee;
+position:sticky;
+top:0;
+z-index:10;
 }
-.cart.open .cart-box{display:block;}
-.cart-item{display:flex;justify-content:space-between;margin:6px 0;font-size:14px}
-.total{border-top:1px solid #eee;margin-top:10px;padding-top:10px;font-weight:500}
-.checkout{
-    width:100%;margin-top:12px;padding:12px;
-    border:none;border-radius:10px;background:black;color:white;cursor:pointer;
+.logo{font-weight:300;font-size:20px}
+.cart{font-size:22px;cursor:pointer}
+
+/* GRID */
+.products{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+padding:40px;
+}
+.card{
+background:#fff;
+padding:30px;
+border-radius:22px;
+text-align:center;
+cursor:pointer;
+transition:.4s;
+box-shadow:0 8px 24px rgba(0,0,0,0.06);
+}
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 16px 40px rgba(0,0,0,0.12);
+}
+.card img{
+width:100%;
+height:260px;
+object-fit:contain;
+}
+.price{color:#666}
+
+/* MODAL */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.4);
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+pointer-events:none;
+transition:.35s;
+z-index:100;
+}
+.modal.show{
+opacity:1;
+pointer-events:auto;
 }
 
-/* HERO */
-.hero{height:65vh;display:flex;align-items:center;justify-content:space-between;padding:0 8vw;background:linear-gradient(#fff,#f6f6f6)}
-.hero h1{font-size:60px;font-weight:300;margin:0}
-.hero p{color:#666;font-size:20px;margin-top:10px}
-.hero img{width:420px}
-
-/* SHOP */
-.shop{padding:80px 7vw;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:40px}
-.card{background:white;border-radius:28px;padding:34px;text-align:center;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.04);transition:.35s}
-.card:hover{transform:translateY(-10px);box-shadow:0 30px 70px rgba(0,0,0,.1)}
-.image-box{height:230px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
-.image-box img{max-width:100%;max-height:100%;object-fit:contain}
-
-/* PRODUCT PAGE */
-.product-page{
-    position:fixed;inset:0;background:white;
-    z-index:999;display:none;opacity:0;transform:translateY(30px);
-    transition:.45s cubic-bezier(.2,.8,.2,1);
+/* WINDOW */
+.modalBox{
+background:#fff;
+width:min(1000px,92%);
+height:min(88vh,720px);
+border-radius:28px;
+display:grid;
+grid-template-columns:1fr 1fr;
+overflow:hidden;
+box-shadow:0 40px 80px rgba(0,0,0,0.35);
+transform:scale(.9);
+transition:.4s;
 }
-.product-page.active{display:block;opacity:1;transform:translateY(0)}
-.back{position:absolute;top:90px;left:10vw;color:#777;cursor:pointer}
+.modal.show .modalBox{transform:scale(1)}
 
-.product-wrap{display:flex;gap:80px;padding:120px 10vw;align-items:center}
-.product-wrap img{width:440px}
-.price-big{font-size:28px;margin:10px 0 25px}
+/* LEFT IMAGE */
+.modalLeft{
+background:#f7f7f9;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px;
+}
+.modalLeft img{
+width:100%;
+max-height:400px;
+object-fit:contain;
+transition:.5s;
+}
 
-.config{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
-.option{padding:12px 18px;border:1px solid #ddd;border-radius:12px;cursor:pointer}
-.option.active{border-color:black;background:#f4f4f4}
+/* RIGHT CONTENT */
+.modalRight{
+padding:50px;
+overflow:auto;
+}
+.modalRight h2{
+font-size:34px;
+font-weight:500;
+margin:0 0 10px;
+}
+.modalRight p{
+white-space:pre-line;
+color:#555;
+line-height:1.6;
+}
+.priceBig{
+font-size:22px;
+margin:14px 0 24px;
+}
 
-.addbtn{padding:16px 26px;border:none;border-radius:14px;background:black;color:white;cursor:pointer}
-.desc{white-space:pre-line;color:#555;font-size:18px;max-width:520px}
+/* COLOR SELECTOR */
+.colors{display:flex;gap:10px;margin:20px 0}
+.color{
+padding:10px 16px;
+border-radius:999px;
+border:1px solid #ddd;
+cursor:pointer;
+transition:.25s;
+font-size:14px;
+}
+.color:hover{background:#f0f0f3}
+.color.active{
+background:#111;
+color:#fff;
+border-color:#111;
+}
+
+/* BUTTON */
+.btn{
+margin-top:24px;
+background:#111;
+color:#fff;
+padding:14px 24px;
+border:none;
+border-radius:999px;
+cursor:pointer;
+font-size:15px;
+}
+
+/* CLOSE */
+.close{
+position:absolute;
+top:18px;
+right:24px;
+font-size:28px;
+cursor:pointer;
+}
+
+@media(max-width:900px){
+.modalBox{
+grid-template-columns:1fr;
+height:auto;
+max-height:92vh;
+}
+.modalLeft{padding:30px}
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    <div class="logo">Aqua Brush</div>
+<nav>
+<div class="logo">Aqua Brush</div>
+<div class="cart">🛒</div>
+</nav>
 
-    <div class="cart" onclick="toggleCart()">
-        🛒 <span class="cart-count" id="count">0</span>
-
-        <div class="cart-box">
-            <div id="cartItems"></div>
-            <div class="total">Summe: <span id="sum">0€</span></div>
-            <button class="checkout">Checkout</button>
-        </div>
-    </div>
-</div>
-
-<!-- SHOP -->
-<div id="shop">
-
-<section class="hero">
-<div>
-<h1>Die Zukunft<br>der Zahnpflege</h1>
-<p>Wasser. Feedback. Streaks.</p>
-</div>
-<img src="darktech.png">
-</section>
-
-<section class="shop">
+<section class="products">
 
 <div class="card" onclick="openProduct('brush')">
-<div class="image-box"><img src="darktech.png"></div>
-<h2>Zahnbürste</h2><div>79€</div>
+<img src="darktech.png">
+<h3>Zahnbürste</h3>
+<p class="price">79€</p>
 </div>
 
 <div class="card" onclick="openProduct('box')">
-<div class="image-box"><img src="box.png"></div>
-<h2>Box</h2><div>99€</div>
+<img src="box.png">
+<h3>Station</h3>
+<p class="price">99€</p>
 </div>
 
 <div class="card" onclick="openProduct('bundle')">
-<div class="image-box"><img src="bundle.png"></div>
-<h2>Bundle</h2><div>149€</div>
+<img src="bundle.png">
+<h3>Bundle</h3>
+<p class="price">149€</p>
 </div>
 
 </section>
-</div>
 
-<!-- PRODUCT PAGE -->
-<div class="product-page" id="productPage">
-<div class="back" onclick="closeProduct()">← Zurück</div>
 
-<div class="product-wrap">
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="bgClose(event)">
+<div class="modalBox">
+<div class="close" onclick="closeModal()">×</div>
+
+<div class="modalLeft">
 <img id="pImg">
-<div>
-<h1 id="pTitle"></h1>
-<p id="pDesc" class="desc"></p>
-<div class="price-big" id="pPrice"></div>
-<div class="config" id="config"></div>
-<button class="addbtn" onclick="addConfigured()">In den Warenkorb</button>
 </div>
+
+<div class="modalRight">
+<h2 id="pTitle"></h2>
+<div class="priceBig" id="pPrice"></div>
+<p id="pDesc"></p>
+
+<div id="config"></div>
+
+<button class="btn">In den Warenkorb</button>
+</div>
+
 </div>
 </div>
 
 <script>
-
 const data={
 brush:{
 title:"Aqua Brush",
@@ -170,7 +254,7 @@ desc:`Die Station ist das Herzstück des Systems. Sie wurde entwickelt, um deine
 
 Durch das minimalistische Design passt sie perfekt in moderne Badezimmer.
 
-Die Zahnbürste dockt magnetisch bzw. präzise an und wird automatisch verbunden. So entsteht ein integriertes System, das Reinigung, Komfort und Design vereint.
+Die Zahnbürste dockt magnetisch an und wird automatisch verbunden. So entsteht ein integriertes System, das Reinigung, Komfort und Design vereint.
 
 Ideal für alle, die aus einer Zahnbürste ein echtes Smart-Care-System machen möchten.`
 },
@@ -191,88 +275,45 @@ Perfekt für alle, die direkt das vollständige Erlebnis wollen.`
 }
 };
 
-let current=null;
-let selectedColor=null;
+let currentColor=null;
 
-/* OPEN PRODUCT */
-function openProduct(id){
-current=id;
-const p=data[id];
-document.getElementById("pTitle").innerText=p.title;
-document.getElementById("pDesc").innerText=p.desc;
-document.getElementById("config").innerHTML="";
+function openProduct(type){
+const p=data[type];
+modal.classList.add("show");
+pTitle.innerText=p.title;
+pDesc.innerText=p.desc;
 
-if(id==="brush"){
-selectedColor=Object.keys(p.colors)[0];
-updateBrushUI();
-Object.keys(p.colors).forEach(name=>{
-const div=document.createElement("div");
-div.className="option";
-div.innerText=name;
-div.onclick=()=>{
-selectedColor=name;
-updateBrushUI();
-};
-document.getElementById("config").appendChild(div);
-});
+if(type==="brush"){
+const first=Object.keys(p.colors)[0];
+currentColor=first;
+pImg.src=p.colors[first].img;
+pPrice.innerText=(p.base+p.colors[first].price)+"€";
+
+config.innerHTML=`<div class="colors">${
+Object.keys(p.colors).map((c,i)=>
+`<div class="color ${i==0?"active":""}" onclick="setColor('${c}')">${c}</div>`
+).join("")
+}</div>`;
+
 }else{
-document.getElementById("pImg").src=p.img;
-document.getElementById("pPrice").innerText=p.price+"€";
+pImg.src=p.img;
+pPrice.innerText=p.price+"€";
+config.innerHTML="";
+}
 }
 
-document.getElementById("productPage").classList.add("active");
-}
-
-/* BRUSH UPDATE */
-function updateBrushUI(){
+function setColor(name){
 const p=data.brush;
-const c=p.colors[selectedColor];
-document.getElementById("pImg").src=c.img;
-document.getElementById("pPrice").innerText=(p.base+c.price)+"€";
-document.querySelectorAll(".option").forEach(o=>{
-o.classList.toggle("active",o.innerText===selectedColor);
-});
+currentColor=name;
+pImg.src=p.colors[name].img;
+pPrice.innerText=(p.base+p.colors[name].price)+"€";
+document.querySelectorAll(".color").forEach(el=>el.classList.remove("active"));
+event.target.classList.add("active");
 }
 
-/* CLOSE */
-function closeProduct(){
-document.getElementById("productPage").classList.remove("active");
-}
-
-/* CART */
-let cart=[],total=0;
-
-function addConfigured(){
-if(current==="brush"){
-const p=data.brush;
-const c=p.colors[selectedColor];
-addItem("Zahnbürste – "+selectedColor,p.base+c.price);
-}else{
-const p=data[current];
-addItem(p.title,p.price);
-}
-}
-
-function addItem(name,price){
-cart.push({name,price});
-total+=price;
-renderCart();
-}
-
-function renderCart(){
-document.getElementById("count").innerText=cart.length;
-const list=document.getElementById("cartItems");
-list.innerHTML="";
-cart.forEach(i=>{
-list.innerHTML+=`<div class="cart-item"><span>${i.name}</span><span>${i.price}€</span></div>`;
-});
-document.getElementById("sum").innerText=total+"€";
-}
-
-function toggleCart(){
-document.querySelector(".cart").classList.toggle("open");
-}
-
+function closeModal(){modal.classList.remove("show")}
+function bgClose(e){if(e.target.id==="modal")closeModal()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()})
 </script>
 
 </body>
