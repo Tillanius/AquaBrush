@@ -26,7 +26,7 @@ body{margin:0;font-family:Inter,sans-serif;background:#fff;color:#111}
     padding:2px 7px;font-size:12px;
 }
 
-/* CART DROPDOWN */
+/* CART */
 .cart-box{
     position:absolute;right:0;top:35px;width:300px;
     background:white;border-radius:16px;
@@ -72,12 +72,12 @@ body{margin:0;font-family:Inter,sans-serif;background:#fff;color:#111}
 .option.active{border-color:black;background:#f4f4f4}
 
 .addbtn{padding:16px 26px;border:none;border-radius:14px;background:black;color:white;cursor:pointer}
+.desc{white-space:pre-line;color:#555;font-size:18px;max-width:520px}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div class="logo">Aqua Brush</div>
 
@@ -131,7 +131,7 @@ body{margin:0;font-family:Inter,sans-serif;background:#fff;color:#111}
 <img id="pImg">
 <div>
 <h1 id="pTitle"></h1>
-<p id="pDesc"></p>
+<p id="pDesc" class="desc"></p>
 <div class="price-big" id="pPrice"></div>
 <div class="config" id="config"></div>
 <button class="addbtn" onclick="addConfigured()">In den Warenkorb</button>
@@ -141,26 +141,60 @@ body{margin:0;font-family:Inter,sans-serif;background:#fff;color:#111}
 
 <script>
 
-/* DATA */
 const data={
 brush:{
 title:"Aqua Brush",
-desc:"Intelligente Zahnbürste mit Wasser-Feedback und App-Tracking.",
 base:79,
 colors:{
 "Dark Tech":{img:"darktech.png",price:0},
 "Hero Z":{img:"heroz.png",price:10},
 "Mint Chart":{img:"mintchart.png",price:10},
 "Blue Chart":{img:"bluechart.png",price:10}
-}},
-box:{title:"Aqua Brush Box",desc:"UV-Reinigung & Dock.",price:99,img:"box.png"},
-bundle:{title:"Bundle",desc:"Brush + Box günstiger.",price:149,img:"bundle.png"}
+},
+desc:`Diese elektrische Zahnbürste verbindet minimalistisches Design mit moderner Technologie.
+
+Der ergonomische Griff liegt angenehm in der Hand, während der präzise Bürstenkopf Plaque effektiv entfernt und gleichzeitig schonend zum Zahnfleisch bleibt.
+
+Das integrierte Display zeigt wichtige Informationen wie Modus und Status direkt an der Bürste.
+
+Entwickelt wurde sie speziell für die Verbindung mit der Station, wodurch zusätzliche Funktionen möglich sind – sie bleibt jedoch auch alleine eine leistungsstarke Premium-Zahnbürste.
+
+Perfekt für alle, die Wert auf saubere Zähne, modernes Design und ein durchdachtes Produkt legen.`
+},
+
+box:{
+title:"Aqua Brush Station",
+price:99,
+img:"box.png",
+desc:`Die Station ist das Herzstück des Systems. Sie wurde entwickelt, um deine Zahnbürste zu laden, zu organisieren und ihre Funktionen zu erweitern.
+
+Durch das minimalistische Design passt sie perfekt in moderne Badezimmer.
+
+Die Zahnbürste dockt magnetisch bzw. präzise an und wird automatisch verbunden. So entsteht ein integriertes System, das Reinigung, Komfort und Design vereint.
+
+Ideal für alle, die aus einer Zahnbürste ein echtes Smart-Care-System machen möchten.`
+},
+
+bundle:{
+title:"Aqua Brush Bundle",
+price:149,
+img:"bundle.png",
+desc:`Mit dem Bundle bekommst du das komplette System in einem Paket.
+
+Zahnbürste und Station sind perfekt aufeinander abgestimmt und bieten zusammen das volle Funktionsspektrum.
+
+Die Zahnbürste sorgt für gründliche Reinigung, während die Station Komfort, Verbindung und Erweiterungen ermöglicht.
+
+Zusammen entsteht ein modernes Zahnpflege-Setup, das Design, Technik und Alltagstauglichkeit verbindet.
+
+Perfekt für alle, die direkt das vollständige Erlebnis wollen.`
+}
 };
 
 let current=null;
 let selectedColor=null;
 
-/* PRODUCT OPEN */
+/* OPEN PRODUCT */
 function openProduct(id){
 current=id;
 const p=data[id];
@@ -189,7 +223,7 @@ document.getElementById("pPrice").innerText=p.price+"€";
 document.getElementById("productPage").classList.add("active");
 }
 
-/* BRUSH PRICE UPDATE */
+/* BRUSH UPDATE */
 function updateBrushUI(){
 const p=data.brush;
 const c=p.colors[selectedColor];
