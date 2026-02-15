@@ -60,7 +60,7 @@ body{
 .hero-text p{color:#666;font-size:20px;margin-top:12px;}
 .hero img{
     width:420px;
-    transition:.45s ease;
+    transition:.5s ease;
 }
 
 /* SHOP */
@@ -79,41 +79,63 @@ body{
     transition:.5s cubic-bezier(.2,.8,.2,1);
     box-shadow:0 8px 30px rgba(0,0,0,0.04);
 }
-.card:hover{transform:translateY(-12px);box-shadow:0 35px 80px rgba(0,0,0,0.10);}
 
-.image-box{height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
+/* PRODUCT IMAGE BOX */
+.image-box{
+    height:260px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:22px;
+    perspective:1000px;
+}
 .image-box img{
     max-width:100%;
     max-height:100%;
     object-fit:contain;
-    transition:.45s ease;
+    transition:transform .2s ease, opacity .4s ease;
 }
-
-h2{font-weight:400;margin:0;font-size:22px;}
-.price{color:#6e6e73;margin:12px 0 18px;}
 
 /* CONFIGURATOR */
 .config{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:12px;
-    margin-bottom:16px;
+    gap:16px;
+    margin-bottom:18px;
 }
 
 .option{
     border:1px solid #e4e4e4;
-    padding:12px;
-    border-radius:14px;
+    padding:14px;
+    border-radius:16px;
     cursor:pointer;
-    font-size:14px;
     transition:.25s;
     background:#fafafa;
+    text-align:left;
+    position:relative;
 }
+
 .option:hover{border-color:#000;}
+
 .option.active{
     border:2px solid #000;
     background:#fff;
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.dot{
+    width:18px;height:18px;border-radius:50%;
+    display:inline-block;margin-right:8px;
+    vertical-align:middle;
+}
+
+.selected{
+    position:absolute;
+    right:12px;
+    top:10px;
+    font-size:11px;
+    color:#000;
+    opacity:.6;
 }
 
 /* BUTTON */
@@ -129,6 +151,11 @@ button{
     transition:.3s;
 }
 button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,0,0,0.25);}
+
+.price{
+    color:#6e6e73;
+    margin:12px 0 18px;
+}
 </style>
 </head>
 
@@ -159,40 +186,42 @@ button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,0,0,0.25);
 <!-- SHOP -->
 <section class="shop">
 
-<!-- ZAHNBÜRSTE -->
 <div class="card">
-    <div class="image-box">
+
+    <div class="image-box" id="tiltBox">
         <img id="brushImg" src="darktech.png">
     </div>
 
     <h2>Zahnbürste</h2>
-    <div class="price">79€</div>
+    <div class="price" id="price">79€</div>
 
-    <!-- PRODUKTKONFIGURATOR -->
     <div class="config">
-        <div class="option active" data-model="darktech">Dark Tech</div>
-        <div class="option" data-model="heroz">Hero Z</div>
-        <div class="option" data-model="mintchart">Mint Chart</div>
-        <div class="option" data-model="bluechart">Blue Chart</div>
+
+        <div class="option active" data-model="darktech">
+            <span class="dot" style="background:#111"></span>
+            Dark Tech
+            <span class="selected">Ausgewählt</span>
+        </div>
+
+        <div class="option" data-model="heroz">
+            <span class="dot" style="background:#d9d9d9"></span>
+            Hero Z
+        </div>
+
+        <div class="option" data-model="mintchart">
+            <span class="dot" style="background:#a8e6cf"></span>
+            Mint Chart
+        </div>
+
+        <div class="option" data-model="bluechart">
+            <span class="dot" style="background:#a8caff"></span>
+            Blue Chart
+        </div>
+
     </div>
 
     <button onclick="addBrush()">In den Warenkorb</button>
-</div>
 
-<!-- BOX -->
-<div class="card">
-    <div class="image-box"><img src="box.png"></div>
-    <h2>Box</h2>
-    <div class="price">99€</div>
-    <button onclick="addToCart('Box',99)">In den Warenkorb</button>
-</div>
-
-<!-- BUNDLE -->
-<div class="card">
-    <div class="image-box"><img src="bundle.png"></div>
-    <h2>Bundle</h2>
-    <div class="price">149€</div>
-    <button onclick="addToCart('Bundle',149)">In den Warenkorb</button>
 </div>
 
 </section>
@@ -212,15 +241,25 @@ let selectedModel="darktech";
 const brushImg=document.getElementById("brushImg");
 const heroImg=document.getElementById("heroImg");
 
-/* KONFIGURATOR KLICK */
+/* CLICK SELECTION */
 document.querySelectorAll(".option").forEach(btn=>{
     btn.addEventListener("click",()=>{
-        document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+
+        document.querySelectorAll(".option").forEach(o=>{
+            o.classList.remove("active");
+            const s=o.querySelector(".selected");
+            if(s) s.remove();
+        });
+
         btn.classList.add("active");
+
+        const label=document.createElement("span");
+        label.className="selected";
+        label.textContent="Ausgewählt";
+        btn.appendChild(label);
 
         selectedModel=btn.dataset.model;
 
-        /* Fade animation */
         brushImg.style.opacity=0;
         heroImg.style.opacity=0;
 
@@ -229,22 +268,32 @@ document.querySelectorAll(".option").forEach(btn=>{
             heroImg.src=brushImages[selectedModel];
             brushImg.style.opacity=1;
             heroImg.style.opacity=1;
-        },180);
+        },200);
     });
+});
+
+/* 3D TILT EFFECT */
+const box=document.getElementById("tiltBox");
+box.addEventListener("mousemove",(e)=>{
+    const r=box.getBoundingClientRect();
+    const x=e.clientX-r.left;
+    const y=e.clientY-r.top;
+    const rx=(y/r.height-0.5)*10;
+    const ry=(x/r.width-0.5)*-10;
+    brushImg.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) scale(1.05)`;
+});
+box.addEventListener("mouseleave",()=>{
+    brushImg.style.transform="rotateX(0) rotateY(0) scale(1)";
 });
 
 /* CART */
 let cart=[], total=0;
 
-function addToCart(name,price){
-    cart.push({name,price});
-    total+=price;
-    updateCart();
-}
-
 function addBrush(){
-    const label=document.querySelector(".option.active").textContent;
-    addToCart("Zahnbürste – "+label,79);
+    const label=document.querySelector(".option.active").textContent.trim();
+    cart.push({name:"Zahnbürste – "+label,price:79});
+    total+=79;
+    updateCart();
 }
 
 function updateCart(){
