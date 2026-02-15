@@ -10,241 +10,256 @@
 <style>
 body{
     margin:0;
-    font-family:'Inter',sans-serif;
+    font-family:'Inter', sans-serif;
+    background:#fff;
+    color:#111;
 }
 
 /* HEADER */
 .header{
-    position:fixed;
-    top:0;
-    width:100%;
-    height:70px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 40px;
-    backdrop-filter:blur(20px);
+    backdrop-filter: blur(16px);
     background:rgba(255,255,255,0.75);
-    z-index:100;
-}
-
-.lang{cursor:pointer;margin-left:15px}
-
-/* STAGE */
-.stage{
-    height:100vh;
+    height:70px;
+    padding:0 60px;
     display:flex;
-    flex-direction:column;
     align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding-top:80px;
-}
-
-.stage img{
-    width:420px;
-    max-width:90vw;
-    transition:.5s;
-}
-
-/* CONFIG */
-.config{
+    justify-content:space-between;
     position:sticky;
-    bottom:0;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.logo{font-weight:200;font-size:28px;}
+.cart{position:relative;cursor:pointer;font-size:20px;}
+
+.cart-dropdown{
+    position:absolute;
+    right:0;
+    top:40px;
+    width:320px;
     background:white;
-    padding:24px 6vw;
-    box-shadow:0 -10px 30px rgba(0,0,0,0.1);
+    border-radius:20px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.2);
+    padding:20px;
+    display:none;
+}
+.cart.open .cart-dropdown{display:block;}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;}
+.total{border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-weight:500;}
+
+/* HERO */
+.hero{
+    height:88vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 8vw;
+    background:linear-gradient(180deg,#fff,#f6f6f6);
+}
+.hero-text h1{font-size:64px;font-weight:300;margin:0;}
+.hero-text p{color:#666;font-size:20px;margin-top:12px;}
+.hero img{
+    width:420px;
+    transition:.45s ease;
 }
 
-.opts{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
-.opt{
-    border:1px solid #ddd;
-    padding:12px 16px;
+/* SHOP */
+.shop{
+    padding:80px 7vw;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap:40px;
+}
+
+.card{
+    background:white;
+    border-radius:28px;
+    padding:34px;
+    text-align:center;
+    transition:.5s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 8px 30px rgba(0,0,0,0.04);
+}
+.card:hover{transform:translateY(-12px);box-shadow:0 35px 80px rgba(0,0,0,0.10);}
+
+.image-box{height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
+.image-box img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    transition:.45s ease;
+}
+
+h2{font-weight:400;margin:0;font-size:22px;}
+.price{color:#6e6e73;margin:12px 0 18px;}
+
+/* CONFIGURATOR */
+.config{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-bottom:16px;
+}
+
+.option{
+    border:1px solid #e4e4e4;
+    padding:12px;
     border-radius:14px;
     cursor:pointer;
+    font-size:14px;
+    transition:.25s;
     background:#fafafa;
 }
-.opt.active{border:2px solid #000;background:white}
+.option:hover{border-color:#000;}
+.option.active{
+    border:2px solid #000;
+    background:#fff;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
 
+/* BUTTON */
 button{
-    padding:16px 26px;
+    width:100%;
+    padding:15px;
     border:none;
     border-radius:18px;
     background:black;
     color:white;
+    font-size:15px;
     cursor:pointer;
+    transition:.3s;
 }
-
-/* CART */
-.cart{
-    position:fixed;
-    right:-420px;
-    top:0;
-    width:420px;
-    height:100%;
-    background:white;
-    padding:30px;
-    box-shadow:-20px 0 60px rgba(0,0,0,0.25);
-    transition:.5s;
-}
-.cart.open{right:0}
-
-.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;}
-.total{border-top:1px solid #eee;margin-top:15px;padding-top:10px}
+button:hover{transform:translateY(-2px);box-shadow:0 15px 40px rgba(0,0,0,0.25);}
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
-    <div>Aqua Brush</div>
-    <div>
-        <span class="lang" onclick="setLang('de')">DE</span>
-        <span class="lang" onclick="setLang('en')">EN</span>
-        <span style="cursor:pointer;margin-left:20px" onclick="toggleCart()">🛒</span>
+    <div class="logo">Aqua Brush</div>
+
+    <div class="cart" onclick="toggleCart()">
+        🛒 <span id="cartCount">0</span>
+        <div class="cart-dropdown">
+            <div id="cartItems"></div>
+            <div class="total">Summe: <span id="total">0€</span></div>
+        </div>
     </div>
 </div>
 
-<section class="stage">
-    <h1 id="title">Die Zukunft der Zahnpflege</h1>
-    <p id="subtitle">Wasser. Feedback. Streaks.</p>
-    <img id="product" src="darktech.png">
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-text">
+        <h1>Die Zukunft<br>der Zahnpflege</h1>
+        <p>Wasser. Feedback. Streaks.</p>
+    </div>
+    <img id="heroImg" src="darktech.png">
 </section>
 
-<div class="config">
-    <div class="opts">
-        <div class="opt active" data-model="darktech">Dark Tech</div>
-        <div class="opt" data-model="heroz">Hero Z</div>
-        <div class="opt" data-model="mintchart">Mint Chart</div>
-        <div class="opt" data-model="bluechart">Blue Chart</div>
-    </div>
-    <button onclick="addBrush()" id="buyBtn">In den Warenkorb – 79€</button>
-</div>
+<!-- SHOP -->
+<section class="shop">
 
-<div class="cart" id="cart">
-    <h2 id="cartTitle">Warenkorb</h2>
-    <div id="items"></div>
-
-    <div class="total">
-        <div>Zwischensumme: <span id="subtotal">0€</span></div>
-        <div>Versand: <span id="shipping">0€</span></div>
-        <div>Steuer: <span id="tax">0€</span></div>
-        <b>Gesamt: <span id="total">0€</span></b>
+<!-- ZAHNBÜRSTE -->
+<div class="card">
+    <div class="image-box">
+        <img id="brushImg" src="darktech.png">
     </div>
 
-    <button style="margin-top:20px;width:100%" onclick="checkout()">Stripe Checkout</button>
+    <h2>Zahnbürste</h2>
+    <div class="price">79€</div>
+
+    <!-- PRODUKTKONFIGURATOR -->
+    <div class="config">
+        <div class="option active" data-model="darktech">Dark Tech</div>
+        <div class="option" data-model="heroz">Hero Z</div>
+        <div class="option" data-model="mintchart">Mint Chart</div>
+        <div class="option" data-model="bluechart">Blue Chart</div>
+    </div>
+
+    <button onclick="addBrush()">In den Warenkorb</button>
 </div>
+
+<!-- BOX -->
+<div class="card">
+    <div class="image-box"><img src="box.png"></div>
+    <h2>Box</h2>
+    <div class="price">99€</div>
+    <button onclick="addToCart('Box',99)">In den Warenkorb</button>
+</div>
+
+<!-- BUNDLE -->
+<div class="card">
+    <div class="image-box"><img src="bundle.png"></div>
+    <h2>Bundle</h2>
+    <div class="price">149€</div>
+    <button onclick="addToCart('Bundle',149)">In den Warenkorb</button>
+</div>
+
+</section>
 
 <script>
 
-/* LANGUAGE */
-const text={
-de:{
-title:"Die Zukunft der Zahnpflege",
-subtitle:"Wasser. Feedback. Streaks.",
-cart:"Warenkorb",
-buy:"In den Warenkorb – 79€"
-},
-en:{
-title:"The future of dental care",
-subtitle:"Water. Feedback. Streaks.",
-cart:"Cart",
-buy:"Add to cart – €79"
-}
+/* MODEL IMAGES */
+const brushImages={
+    darktech:"darktech.png",
+    heroz:"heroz.png",
+    mintchart:"mintchart.png",
+    bluechart:"bluechart.png"
 };
 
-function setLang(l){
-    localStorage.lang=l;
-    applyLang();
-}
-function applyLang(){
-    const l=localStorage.lang||"de";
-    document.getElementById("title").textContent=text[l].title;
-    document.getElementById("subtitle").textContent=text[l].subtitle;
-    document.getElementById("cartTitle").textContent=text[l].cart;
-    document.getElementById("buyBtn").textContent=text[l].buy;
-}
-applyLang();
+let selectedModel="darktech";
 
-/* PRODUCT */
-const images={
-darktech:"darktech.png",
-heroz:"heroz.png",
-mintchart:"mintchart.png",
-bluechart:"bluechart.png"
-};
+const brushImg=document.getElementById("brushImg");
+const heroImg=document.getElementById("heroImg");
 
-let selected=localStorage.model||"darktech";
-document.getElementById("product").src=images[selected];
+/* KONFIGURATOR KLICK */
+document.querySelectorAll(".option").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+        document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+        btn.classList.add("active");
 
-document.querySelectorAll(".opt").forEach(o=>{
-    if(o.dataset.model===selected)o.classList.add("active");
+        selectedModel=btn.dataset.model;
 
-    o.onclick=()=>{
-        document.querySelectorAll(".opt").forEach(x=>x.classList.remove("active"));
-        o.classList.add("active");
-        selected=o.dataset.model;
-        localStorage.model=selected;
-        document.getElementById("product").src=images[selected];
-    }
+        /* Fade animation */
+        brushImg.style.opacity=0;
+        heroImg.style.opacity=0;
+
+        setTimeout(()=>{
+            brushImg.src=brushImages[selectedModel];
+            heroImg.src=brushImages[selectedModel];
+            brushImg.style.opacity=1;
+            heroImg.style.opacity=1;
+        },180);
+    });
 });
 
-/* CART STORAGE */
-let cart=JSON.parse(localStorage.cart||"[]");
+/* CART */
+let cart=[], total=0;
 
-function addBrush(){
-    cart.push({name:"Brush "+selected,price:79});
-    saveCart();
-    toggleCart(true);
-}
-
-function saveCart(){
-    localStorage.cart=JSON.stringify(cart);
+function addToCart(name,price){
+    cart.push({name,price});
+    total+=price;
     updateCart();
 }
 
+function addBrush(){
+    const label=document.querySelector(".option.active").textContent;
+    addToCart("Zahnbürste – "+label,79);
+}
+
 function updateCart(){
-    let sub=0;
-    const box=document.getElementById("items");
-    box.innerHTML="";
-    cart.forEach((i,idx)=>{
-        sub+=i.price;
-        box.innerHTML+=`
-        <div class="cart-item">
-            <span>${i.name}</span>
-            <span>${i.price}€ <span style="cursor:pointer;color:red" onclick="removeItem(${idx})">✕</span></span>
-        </div>`;
+    document.getElementById("cartCount").textContent=cart.length;
+    const items=document.getElementById("cartItems");
+    items.innerHTML="";
+    cart.forEach(i=>{
+        items.innerHTML+=`<div class="cart-item"><span>${i.name}</span><span>${i.price}€</span></div>`;
     });
-
-    const shipping=sub?4.9:0;
-    const tax=sub*0.19;
-    const total=sub+shipping+tax;
-
-    document.getElementById("subtotal").textContent=sub.toFixed(2)+"€";
-    document.getElementById("shipping").textContent=shipping.toFixed(2)+"€";
-    document.getElementById("tax").textContent=tax.toFixed(2)+"€";
-    document.getElementById("total").textContent=total.toFixed(2)+"€";
+    document.getElementById("total").textContent=total+"€";
 }
 
-function removeItem(i){
-    cart.splice(i,1);
-    saveCart();
+function toggleCart(){
+    document.querySelector(".cart").classList.toggle("open");
 }
-
-updateCart();
-
-/* CART PANEL */
-function toggleCart(force){
-    const c=document.getElementById("cart");
-    if(force)c.classList.add("open");
-    else c.classList.toggle("open");
-}
-
-/* STRIPE DEMO */
-function checkout(){
-    alert("Hier würdest du Stripe integrieren.\\n\\nIch kann dir den echten Stripe-Code bauen, wenn du willst.");
-}
-
 </script>
 
 </body>
