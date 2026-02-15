@@ -30,27 +30,11 @@ body{
     border-bottom:1px solid rgba(0,0,0,0.05);
 }
 .logo{font-weight:200;font-size:28px;}
-.cart{position:relative;cursor:pointer;font-size:20px;}
-
-.cart-dropdown{
-    position:absolute;
-    right:0;
-    top:40px;
-    width:320px;
-    background:white;
-    border-radius:20px;
-    box-shadow:0 30px 70px rgba(0,0,0,0.2);
-    padding:20px;
-    display:none;
-}
-.cart.open .cart-dropdown{display:block;}
-
-.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;}
-.total{border-top:1px solid #eee;padding-top:12px;margin-top:12px;font-weight:500;}
+.cart{cursor:pointer}
 
 /* HERO */
 .hero{
-    height:88vh;
+    height:70vh;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -59,7 +43,7 @@ body{
 }
 .hero-text h1{font-size:64px;font-weight:300;margin:0;}
 .hero-text p{color:#666;font-size:20px;margin-top:12px;}
-.hero img{width:420px;object-fit:contain;}
+.hero img{width:420px;}
 
 /* SHOP */
 .shop{
@@ -68,43 +52,60 @@ body{
     grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
     gap:40px;
 }
-
 .card{
     background:white;
     border-radius:28px;
     padding:34px;
     text-align:center;
-    transition:.4s;
+    transition:.3s;
     box-shadow:0 8px 30px rgba(0,0,0,0.04);
+    cursor:pointer;
 }
-.card:hover{transform:translateY(-10px);box-shadow:0 30px 70px rgba(0,0,0,0.10);}
+.card:hover{transform:translateY(-8px);}
 
 .image-box{height:240px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;}
-.image-box img{max-width:100%;max-height:100%;object-fit:contain;transition:.4s;}
+.image-box img{max-width:100%;max-height:100%;object-fit:contain;}
 
 h2{font-weight:400;margin:0;font-size:22px;}
 .price{color:#6e6e73;margin:12px 0 18px;}
 
-select{
-    padding:12px;
-    width:100%;
-    border-radius:12px;
-    border:1px solid #e2e2e2;
-    margin-bottom:12px;
+/* PRODUCT PAGE */
+.product-page{
+    display:none;
+    padding:100px 10vw;
 }
-
+.product-layout{
+    display:flex;
+    gap:80px;
+    align-items:center;
+}
+.product-layout img{
+    width:420px;
+}
+.product-info h1{
+    font-size:48px;
+    font-weight:300;
+}
+.product-info p{
+    font-size:18px;
+    color:#555;
+    margin:20px 0;
+    max-width:500px;
+}
+.back{
+    margin-bottom:40px;
+    cursor:pointer;
+    color:#777;
+}
 button{
-    width:100%;
-    padding:15px;
+    padding:16px 28px;
     border:none;
-    border-radius:18px;
+    border-radius:14px;
     background:black;
     color:white;
-    font-size:15px;
+    font-size:16px;
     cursor:pointer;
-    transition:.3s;
 }
-button:hover{transform:translateY(-2px);}
 </style>
 </head>
 
@@ -113,111 +114,95 @@ button:hover{transform:translateY(-2px);}
 <!-- HEADER -->
 <div class="header">
     <div class="logo">Aqua Brush</div>
-
-    <div class="cart" onclick="toggleCart()">
-        🛒 <span id="cartCount">0</span>
-        <div class="cart-dropdown">
-            <div id="cartItems"></div>
-            <div class="total">Summe: <span id="total">0€</span></div>
-        </div>
-    </div>
 </div>
 
-<!-- HERO -->
+<!-- SHOP CONTENT -->
+<div id="shopView">
+
 <section class="hero">
     <div class="hero-text">
         <h1>Die Zukunft<br>der Zahnpflege</h1>
         <p>Wasser. Feedback. Streaks.</p>
     </div>
-    <img id="heroImg" src="darktech.png">
+    <img src="darktech.png">
 </section>
 
-<!-- SHOP -->
 <section class="shop">
 
-<!-- ZAHNBÜRSTE -->
-<div class="card">
-    <div class="image-box">
-        <img id="brushImg" src="darktech.png">
-    </div>
-
+<div class="card" onclick="openProduct('brush')">
+    <div class="image-box"><img src="darktech.png"></div>
     <h2>Zahnbürste</h2>
     <div class="price">79€</div>
-
-    <select id="brushSelect">
-        <option value="darktech">Dark Tech</option>
-        <option value="heroz">Hero Z</option>
-        <option value="mintchart">Mint Chart</option>
-        <option value="bluechart">Blue Chart</option>
-    </select>
-
-    <button onclick="addBrush()">In den Warenkorb</button>
 </div>
 
-<!-- BOX -->
-<div class="card">
+<div class="card" onclick="openProduct('box')">
     <div class="image-box"><img src="box.png"></div>
     <h2>Box</h2>
     <div class="price">99€</div>
-    <button onclick="addToCart('Box',99)">In den Warenkorb</button>
 </div>
 
-<!-- BUNDLE -->
-<div class="card">
+<div class="card" onclick="openProduct('bundle')">
     <div class="image-box"><img src="bundle.png"></div>
     <h2>Bundle</h2>
     <div class="price">149€</div>
-    <button onclick="addToCart('Bundle',149)">In den Warenkorb</button>
 </div>
 
 </section>
+</div>
+
+<!-- PRODUCT PAGE -->
+<div class="product-page" id="productView">
+
+<div class="back" onclick="goBack()">← Zurück</div>
+
+<div class="product-layout">
+    <img id="productImage" src="">
+    <div class="product-info">
+        <h1 id="productTitle"></h1>
+        <p id="productDesc"></p>
+        <div class="price" id="productPrice"></div>
+        <button>In den Warenkorb</button>
+    </div>
+</div>
+
+</div>
 
 <script>
 
-/* BRUSH IMAGE SWITCH */
-const brushImages={
-    darktech:"darktech.png",
-    heroz:"heroz.png",
-    mintchart:"mintchart.png",
-    bluechart:"bluechart.png"
+const products={
+    brush:{
+        title:"Aqua Brush Zahnbürste",
+        price:"79€",
+        img:"darktech.png",
+        desc:"Die intelligente Zahnbürste mit Wasser-Feedback, App-Tracking und modernem Design."
+    },
+    box:{
+        title:"Aqua Brush Box",
+        price:"99€",
+        img:"box.png",
+        desc:"Die Premium-Ladestation mit UV-Reinigung und magnetischer Docking-Technologie."
+    },
+    bundle:{
+        title:"Aqua Brush Bundle",
+        price:"149€",
+        img:"bundle.png",
+        desc:"Zahnbürste + Box im Bundle. Spare Geld und starte direkt mit dem kompletten Setup."
+    }
 };
 
-const select=document.getElementById("brushSelect");
-const brushImg=document.getElementById("brushImg");
-const heroImg=document.getElementById("heroImg");
+function openProduct(id){
+    document.getElementById("shopView").style.display="none";
+    document.getElementById("productView").style.display="block";
 
-select.addEventListener("change",()=>{
-    const src=brushImages[select.value];
-    brushImg.src=src;
-    heroImg.src=src;
-});
-
-/* CART */
-let cart=[], total=0;
-
-function addToCart(name,price){
-    cart.push({name,price});
-    total+=price;
-    updateCart();
+    document.getElementById("productTitle").innerText=products[id].title;
+    document.getElementById("productDesc").innerText=products[id].desc;
+    document.getElementById("productPrice").innerText=products[id].price;
+    document.getElementById("productImage").src=products[id].img;
 }
 
-function addBrush(){
-    const text=select.options[select.selectedIndex].text;
-    addToCart("Zahnbürste – "+text,79);
-}
-
-function updateCart(){
-    document.getElementById("cartCount").textContent=cart.length;
-    const items=document.getElementById("cartItems");
-    items.innerHTML="";
-    cart.forEach(i=>{
-        items.innerHTML+=`<div class="cart-item"><span>${i.name}</span><span>${i.price}€</span></div>`;
-    });
-    document.getElementById("total").textContent=total+"€";
-}
-
-function toggleCart(){
-    document.querySelector(".cart").classList.toggle("open");
+function goBack(){
+    document.getElementById("shopView").style.display="block";
+    document.getElementById("productView").style.display="none";
 }
 
 </script>
