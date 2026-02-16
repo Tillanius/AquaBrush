@@ -14,19 +14,23 @@ color:#111;
 overflow-x:hidden;
 }
 
-/* NAV */
+/* ===== NAV ===== */
 nav{
 background:#fff;
-padding:18px 50px;
+padding:18px 5vw;
 display:flex;
 justify-content:space-between;
 align-items:center;
 border-bottom:1px solid #eee;
 position:sticky;
 top:0;
-z-index:20;
+z-index:50;
 }
+
 .logo{font-weight:300;font-size:22px}
+
+/* ===== CART DROPDOWN ===== */
+.cartWrap{position:relative}
 .cartBtn{
 cursor:pointer;
 background:#111;
@@ -35,18 +39,54 @@ padding:10px 18px;
 border-radius:999px;
 }
 
-/* STORE GRID */
+.cartDropdown{
+position:absolute;
+right:0;
+top:50px;
+width:320px;
+background:#fff;
+border-radius:22px;
+box-shadow:0 30px 80px rgba(0,0,0,.25);
+padding:20px;
+display:none;
+max-height:420px;
+overflow:auto;
+}
+.cartDropdown.show{display:block}
+
+.cartRow{
+display:grid;
+grid-template-columns:1fr auto auto auto;
+gap:10px;
+align-items:center;
+padding:10px 0;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+.qty button{
+border:none;
+background:#eee;
+padding:4px 8px;
+border-radius:6px;
+cursor:pointer;
+}
+.total{
+margin-top:10px;
+font-weight:600;
+}
+
+/* ===== STORE GRID ===== */
 .products{
 display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:28px;
-padding:50px 7vw;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+padding:50px 6vw;
 max-width:1300px;
 margin:auto;
 }
 .card{
 background:#fff;
-padding:34px;
+padding:32px;
 border-radius:26px;
 text-align:center;
 cursor:pointer;
@@ -59,61 +99,64 @@ box-shadow:0 30px 70px rgba(0,0,0,0.12);
 }
 .card img{
 width:100%;
-height:280px;
+height:240px;
 object-fit:contain;
 }
 
-/* PRODUCT PAGE */
+/* ===== PRODUCT OVERLAY ===== */
 .productPage{
 position:fixed;
 inset:0;
-background:#fff;
-transform:translateY(100%);
-transition:.6s cubic-bezier(.65,.05,.36,1);
-z-index:30;
-overflow:auto;
+background:rgba(0,0,0,0.45);
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+pointer-events:none;
+transition:.4s;
+z-index:60;
 }
-.productPage.show{transform:translateY(0)}
+.productPage.show{opacity:1;pointer-events:auto}
 
-.productWrap{
+/* BOX */
+.productBox{
+background:#fff;
+width:min(1100px,92%);
+height:min(90vh,780px);
+border-radius:30px;
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:60px;
-max-width:1200px;
-margin:120px auto;
-padding:40px;
+overflow:hidden;
+box-shadow:0 40px 90px rgba(0,0,0,.35);
 }
 
-/* APPLE SCROLL IMAGE */
-.imageWrap{
-position:sticky;
-top:120px;
-height:480px;
+/* IMAGE */
+.productImg{
+background:#f6f6f8;
 display:flex;
 align-items:center;
 justify-content:center;
+padding:40px;
 }
-.imageWrap img{
+.productImg img{
 width:100%;
-max-width:420px;
-transition:transform .6s ease;
-}
-.imageWrap.zoom img{
-transform:scale(1.15);
+max-height:420px;
+object-fit:contain;
 }
 
-/* TEXT FADE IN */
-.fade{
-opacity:0;
-transform:translateY(40px);
-transition:all .7s ease;
+/* CONTENT */
+.productContent{
+padding:50px;
+overflow-y:auto;   /* 🔥 SCROLL NUR HIER */
 }
-.fade.show{
-opacity:1;
-transform:translateY(0);
+.productContent p{
+white-space:pre-line;
+color:#555;
+line-height:1.6;
 }
 
-.colors{display:flex;gap:10px;margin:20px 0}
+/* COLORS */
+.colors{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}
 .color{
 padding:10px 16px;
 border-radius:999px;
@@ -125,47 +168,33 @@ cursor:pointer;
 .btn{
 background:#111;
 color:#fff;
-padding:16px 28px;
+padding:16px 26px;
 border:none;
 border-radius:999px;
 cursor:pointer;
 margin-top:20px;
 }
 
-/* CART PAGE */
-.cartPage{
-position:fixed;
-inset:0;
-background:#fff;
-transform:translateX(100%);
-transition:.6s cubic-bezier(.65,.05,.36,1);
-z-index:40;
-overflow:auto;
-padding:60px 8vw;
-}
-.cartPage.show{transform:translateX(0)}
-
-.cartItem{
-display:grid;
-grid-template-columns:1fr auto auto auto;
-gap:20px;
-align-items:center;
-padding:16px 0;
-border-bottom:1px solid #eee;
-}
-
-.qty button{
-border:none;
-background:#eee;
-padding:4px 10px;
-border-radius:6px;
+/* CLOSE */
+.close{
+position:absolute;
+top:22px;
+right:32px;
+font-size:30px;
 cursor:pointer;
+color:white;
 }
 
-.totalBig{
-font-size:32px;
-margin-top:30px;
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+.productBox{
+grid-template-columns:1fr;
+height:min(92vh,900px);
 }
+.productImg{padding:20px}
+.productContent{padding:30px}
+}
+
 </style>
 </head>
 
@@ -173,7 +202,15 @@ margin-top:30px;
 
 <nav>
 <div class="logo">Aqua Brush</div>
-<div class="cartBtn" onclick="openCart()">Warenkorb</div>
+
+<div class="cartWrap">
+<div class="cartBtn" onclick="toggleCart()">Warenkorb</div>
+
+<div class="cartDropdown" id="cartDropdown">
+<div id="cartItems">Warenkorb leer</div>
+<div class="total" id="cartTotal"></div>
+</div>
+</div>
 </nav>
 
 <section class="products">
@@ -190,47 +227,70 @@ margin-top:30px;
 </div>
 </section>
 
-<!-- PRODUCT PAGE -->
-<div class="productPage" id="productPage">
-<div class="productWrap">
+<!-- PRODUCT OVERLAY -->
+<div class="productPage" id="productPage" onclick="bgClose(event)">
+<div class="close" onclick="closeProduct()">×</div>
 
-<div class="imageWrap" id="imgWrap">
+<div class="productBox">
+
+<div class="productImg">
 <img id="pImg">
 </div>
 
-<div>
-<h1 class="fade" id="pTitle"></h1>
-<h2 class="fade" id="pPrice"></h2>
-<p class="fade" id="pDesc" style="white-space:pre-line"></p>
-<div id="config" class="fade"></div>
-<button class="btn fade" onclick="addToCart()">In den Warenkorb</button>
+<div class="productContent">
+<h2 id="pTitle"></h2>
+<h3 id="pPrice"></h3>
+<p id="pDesc"></p>
+<div id="config"></div>
+<button class="btn" onclick="addToCart()">In den Warenkorb</button>
 </div>
 
 </div>
-</div>
-
-<!-- CART PAGE -->
-<div class="cartPage" id="cartPage">
-<h1>Dein Warenkorb</h1>
-<div id="cartList"></div>
-<div class="totalBig" id="cartTotal"></div>
 </div>
 
 <script>
 
-/* ===== PRODUKTDATEN (deine Texte bleiben drin) ===== */
+/* ===== PRODUKTDATEN ===== */
 const data={
-brush:{title:"Aqua Brush",base:79,
+brush:{
+title:"Aqua Brush",
+base:79,
 colors:{
 "Dark Tech":{img:"darktech.png",price:0},
 "Hero Z":{img:"heroz.png",price:10},
 "Mint Chart":{img:"mintchart.png",price:10},
 "Blue Chart":{img:"bluechart.png",price:10}
 },
-desc:`Diese elektrische Zahnbürste verbindet minimalistisches Design mit moderner Technologie...`
+desc:`Diese elektrische Zahnbürste verbindet minimalistisches Design mit moderner Technologie.
+
+Der ergonomische Griff liegt angenehm in der Hand, während der präzise Bürstenkopf Plaque effektiv entfernt und gleichzeitig schonend zum Zahnfleisch bleibt.
+
+Das integrierte Display zeigt wichtige Informationen wie Modus und Status direkt an der Bürste.
+
+Entwickelt wurde sie speziell für die Verbindung mit der Station, wodurch zusätzliche Funktionen möglich sind – sie bleibt jedoch auch alleine eine leistungsstarke Premium-Zahnbürste.
+
+Perfekt für alle, die Wert auf saubere Zähne, modernes Design und ein durchdachtes Produkt legen.`
 },
-box:{title:"Station",price:99,img:"box.png",desc:`Die Station ist das Herzstück des Systems...`},
-bundle:{title:"Bundle",price:149,img:"bundle.png",desc:`Mit dem Bundle bekommst du das komplette System...`}
+
+box:{
+title:"Station",
+price:99,
+img:"box.png",
+desc:`Die Station ist das Herzstück des Systems.
+
+Sie lädt deine Zahnbürste, organisiert sie und erweitert ihre Funktionen.
+
+Minimalistisches Design trifft auf ein integriertes System für Komfort und Stil.`
+},
+
+bundle:{
+title:"Bundle",
+price:149,
+img:"bundle.png",
+desc:`Mit dem Bundle bekommst du das komplette System.
+
+Zahnbürste und Station sind perfekt abgestimmt und bieten zusammen das volle Erlebnis.`
+}
 };
 
 let cart=[];
@@ -238,16 +298,13 @@ let currentType=null;
 let currentColor=null;
 let currentPrice=0;
 
-/* OPEN PRODUCT */
+/* ===== PRODUCT ===== */
 function openProduct(type){
 currentType=type;
 const p=data[type];
 productPage.classList.add("show");
-
 pTitle.innerText=p.title;
 pDesc.innerText=p.desc;
-
-setTimeout(()=>document.querySelectorAll(".fade").forEach(el=>el.classList.add("show")),200);
 
 if(type==="brush"){
 const first=Object.keys(p.colors)[0];
@@ -264,13 +321,6 @@ config.innerHTML="";
 }
 }
 
-/* APPLE ZOOM */
-window.addEventListener("scroll",()=>{
-const y=window.scrollY;
-imgWrap.classList.toggle("zoom",y>120);
-});
-
-/* COLOR */
 function setColor(name,first=false){
 const p=data.brush;
 currentColor=name;
@@ -283,7 +333,7 @@ event.target.classList.add("active");
 }
 }
 
-/* CART */
+/* ===== CART ===== */
 function addToCart(){
 let label=data[currentType].title;
 if(currentType==="brush") label+=" ("+currentColor+")";
@@ -291,16 +341,20 @@ if(currentType==="brush") label+=" ("+currentColor+")";
 const ex=cart.find(i=>i.label===label);
 if(ex) ex.qty++;
 else cart.push({label,price:currentPrice,qty:1});
+
+renderCart();
+closeProduct();
 }
 
-/* CART PAGE */
-function openCart(){
-cartPage.classList.add("show");
-renderCart();
-}
 function renderCart(){
-cartList.innerHTML=cart.map((i,idx)=>`
-<div class="cartItem">
+if(cart.length===0){
+cartItems.innerText="Warenkorb leer";
+cartTotal.innerText="";
+return;
+}
+
+cartItems.innerHTML=cart.map((i,idx)=>`
+<div class="cartRow">
 <div>${i.label}</div>
 <div class="qty">
 <button onclick="changeQty(${idx},-1)">−</button>
@@ -309,13 +363,21 @@ ${i.qty}
 </div>
 <div>${i.price*i.qty}€</div>
 <div onclick="removeItem(${idx})" style="cursor:pointer">✕</div>
-</div>`).join("");
+</div>
+`).join("");
 
-cartTotal.innerText="Gesamt: "+
+cartTotal.innerText="Summe: "+
 cart.reduce((s,i)=>s+i.price*i.qty,0)+"€";
 }
+
 function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderCart();}
 function removeItem(i){cart.splice(i,1);renderCart();}
+
+/* ===== UI ===== */
+function toggleCart(){cartDropdown.classList.toggle("show")}
+function closeProduct(){productPage.classList.remove("show")}
+function bgClose(e){if(e.target.id==="productPage")closeProduct()}
+
 </script>
 
 </body>
