@@ -192,6 +192,14 @@ cursor:pointer;
 color:white;
 }
 
+/* ===== FOOTER ===== */
+.footer{
+text-align:center;
+padding:40px 0 50px;
+color:#666;
+font-size:14px;
+}
+
 @media(max-width:900px){
 .productBox{
 grid-template-columns:1fr;
@@ -235,6 +243,11 @@ height:min(92vh,900px);
 </div>
 </section>
 
+<!-- FOOTER -->
+<footer class="footer">
+© 2026 AquaBrush
+</footer>
+
 <!-- PRODUCT OVERLAY -->
 <div class="productPage" id="productPage" onclick="bgClose(event)">
 <div class="close" onclick="closeProduct()">×</div>
@@ -255,7 +268,6 @@ height:min(92vh,900px);
 </div>
 
 <script>
-
 const data={
 brush:{
 title:"Aqua Brush",
@@ -341,8 +353,6 @@ closeProduct();
 }
 
 function renderCart(){
-
-/* ✅ ZAHL AM ICON */
 document.getElementById("cartCount").innerText=
 cart.reduce((n,i)=>n+i.qty,0);
 
@@ -371,11 +381,9 @@ cart.reduce((s,i)=>s+i.price*i.qty,0)+"€";
 
 function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderCart();}
 function removeItem(i){cart.splice(i,1);renderCart();}
-
 function toggleCart(){cartDropdown.classList.toggle("show")}
 function closeProduct(){productPage.classList.remove("show")}
 function bgClose(e){if(e.target.id==="productPage")closeProduct()}
-
 </script>
 
 </body>
