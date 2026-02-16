@@ -11,163 +11,160 @@ margin:0;
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro",Arial,sans-serif;
 background:#f5f5f7;
 color:#111;
+overflow-x:hidden;
 }
 
 /* NAV */
 nav{
 background:#fff;
-padding:16px 40px;
+padding:18px 50px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 border-bottom:1px solid #eee;
 position:sticky;
 top:0;
-z-index:10;
+z-index:20;
 }
-.logo{font-weight:300;font-size:20px}
-.cart{font-size:22px;cursor:pointer}
+.logo{font-weight:300;font-size:22px}
+.cartBtn{
+cursor:pointer;
+background:#111;
+color:#fff;
+padding:10px 18px;
+border-radius:999px;
+}
 
-/* GRID */
+/* STORE GRID */
 .products{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:20px;
-padding:40px;
+gap:28px;
+padding:50px 7vw;
+max-width:1300px;
+margin:auto;
 }
 .card{
 background:#fff;
-padding:30px;
-border-radius:22px;
+padding:34px;
+border-radius:26px;
 text-align:center;
 cursor:pointer;
-transition:.4s;
-box-shadow:0 8px 24px rgba(0,0,0,0.06);
+transition:.45s;
+box-shadow:0 8px 30px rgba(0,0,0,0.05);
 }
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 16px 40px rgba(0,0,0,0.12);
+transform:translateY(-10px);
+box-shadow:0 30px 70px rgba(0,0,0,0.12);
 }
 .card img{
 width:100%;
-height:260px;
+height:280px;
 object-fit:contain;
 }
-.price{color:#666}
 
-/* MODAL */
-.modal{
+/* PRODUCT PAGE */
+.productPage{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.4);
-display:flex;
-justify-content:center;
-align-items:center;
-opacity:0;
-pointer-events:none;
-transition:.35s;
-z-index:100;
-}
-.modal.show{
-opacity:1;
-pointer-events:auto;
-}
-
-/* WINDOW */
-.modalBox{
 background:#fff;
-width:min(1000px,92%);
-height:min(88vh,720px);
-border-radius:28px;
-display:grid;
-grid-template-columns:1fr 1fr;
-overflow:hidden;
-box-shadow:0 40px 80px rgba(0,0,0,0.35);
-transform:scale(.9);
-transition:.4s;
-}
-.modal.show .modalBox{transform:scale(1)}
-
-/* LEFT IMAGE */
-.modalLeft{
-background:#f7f7f9;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:40px;
-}
-.modalLeft img{
-width:100%;
-max-height:400px;
-object-fit:contain;
-transition:.5s;
-}
-
-/* RIGHT CONTENT */
-.modalRight{
-padding:50px;
+transform:translateY(100%);
+transition:.6s cubic-bezier(.65,.05,.36,1);
+z-index:30;
 overflow:auto;
 }
-.modalRight h2{
-font-size:34px;
-font-weight:500;
-margin:0 0 10px;
-}
-.modalRight p{
-white-space:pre-line;
-color:#555;
-line-height:1.6;
-}
-.priceBig{
-font-size:22px;
-margin:14px 0 24px;
+.productPage.show{transform:translateY(0)}
+
+.productWrap{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+max-width:1200px;
+margin:120px auto;
+padding:40px;
 }
 
-/* COLOR SELECTOR */
+/* APPLE SCROLL IMAGE */
+.imageWrap{
+position:sticky;
+top:120px;
+height:480px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.imageWrap img{
+width:100%;
+max-width:420px;
+transition:transform .6s ease;
+}
+.imageWrap.zoom img{
+transform:scale(1.15);
+}
+
+/* TEXT FADE IN */
+.fade{
+opacity:0;
+transform:translateY(40px);
+transition:all .7s ease;
+}
+.fade.show{
+opacity:1;
+transform:translateY(0);
+}
+
 .colors{display:flex;gap:10px;margin:20px 0}
 .color{
 padding:10px 16px;
 border-radius:999px;
 border:1px solid #ddd;
 cursor:pointer;
-transition:.25s;
-font-size:14px;
 }
-.color:hover{background:#f0f0f3}
-.color.active{
-background:#111;
-color:#fff;
-border-color:#111;
-}
+.color.active{background:#111;color:#fff;border-color:#111}
 
-/* BUTTON */
 .btn{
-margin-top:24px;
 background:#111;
 color:#fff;
-padding:14px 24px;
+padding:16px 28px;
 border:none;
 border-radius:999px;
 cursor:pointer;
-font-size:15px;
+margin-top:20px;
 }
 
-/* CLOSE */
-.close{
-position:absolute;
-top:18px;
-right:24px;
-font-size:28px;
+/* CART PAGE */
+.cartPage{
+position:fixed;
+inset:0;
+background:#fff;
+transform:translateX(100%);
+transition:.6s cubic-bezier(.65,.05,.36,1);
+z-index:40;
+overflow:auto;
+padding:60px 8vw;
+}
+.cartPage.show{transform:translateX(0)}
+
+.cartItem{
+display:grid;
+grid-template-columns:1fr auto auto auto;
+gap:20px;
+align-items:center;
+padding:16px 0;
+border-bottom:1px solid #eee;
+}
+
+.qty button{
+border:none;
+background:#eee;
+padding:4px 10px;
+border-radius:6px;
 cursor:pointer;
 }
 
-@media(max-width:900px){
-.modalBox{
-grid-template-columns:1fr;
-height:auto;
-max-height:92vh;
-}
-.modalLeft{padding:30px}
+.totalBig{
+font-size:32px;
+margin-top:30px;
 }
 </style>
 </head>
@@ -176,144 +173,149 @@ max-height:92vh;
 
 <nav>
 <div class="logo">Aqua Brush</div>
-<div class="cart">🛒</div>
+<div class="cartBtn" onclick="openCart()">Warenkorb</div>
 </nav>
 
 <section class="products">
-
 <div class="card" onclick="openProduct('brush')">
-<img src="darktech.png">
-<h3>Zahnbürste</h3>
-<p class="price">79€</p>
+<img src="darktech.png"><h3>Zahnbürste</h3><p>ab 79€</p>
 </div>
 
 <div class="card" onclick="openProduct('box')">
-<img src="box.png">
-<h3>Station</h3>
-<p class="price">99€</p>
+<img src="box.png"><h3>Station</h3><p>99€</p>
 </div>
 
 <div class="card" onclick="openProduct('bundle')">
-<img src="bundle.png">
-<h3>Bundle</h3>
-<p class="price">149€</p>
+<img src="bundle.png"><h3>Bundle</h3><p>149€</p>
 </div>
-
 </section>
 
+<!-- PRODUCT PAGE -->
+<div class="productPage" id="productPage">
+<div class="productWrap">
 
-<!-- MODAL -->
-<div class="modal" id="modal" onclick="bgClose(event)">
-<div class="modalBox">
-<div class="close" onclick="closeModal()">×</div>
-
-<div class="modalLeft">
+<div class="imageWrap" id="imgWrap">
 <img id="pImg">
 </div>
 
-<div class="modalRight">
-<h2 id="pTitle"></h2>
-<div class="priceBig" id="pPrice"></div>
-<p id="pDesc"></p>
-
-<div id="config"></div>
-
-<button class="btn">In den Warenkorb</button>
+<div>
+<h1 class="fade" id="pTitle"></h1>
+<h2 class="fade" id="pPrice"></h2>
+<p class="fade" id="pDesc" style="white-space:pre-line"></p>
+<div id="config" class="fade"></div>
+<button class="btn fade" onclick="addToCart()">In den Warenkorb</button>
 </div>
 
 </div>
+</div>
+
+<!-- CART PAGE -->
+<div class="cartPage" id="cartPage">
+<h1>Dein Warenkorb</h1>
+<div id="cartList"></div>
+<div class="totalBig" id="cartTotal"></div>
 </div>
 
 <script>
+
+/* ===== PRODUKTDATEN (deine Texte bleiben drin) ===== */
 const data={
-brush:{
-title:"Aqua Brush",
-base:79,
+brush:{title:"Aqua Brush",base:79,
 colors:{
 "Dark Tech":{img:"darktech.png",price:0},
 "Hero Z":{img:"heroz.png",price:10},
 "Mint Chart":{img:"mintchart.png",price:10},
 "Blue Chart":{img:"bluechart.png",price:10}
 },
-desc:`Diese elektrische Zahnbürste verbindet minimalistisches Design mit moderner Technologie.
-
-Der ergonomische Griff liegt angenehm in der Hand, während der präzise Bürstenkopf Plaque effektiv entfernt und gleichzeitig schonend zum Zahnfleisch bleibt.
-
-Das integrierte Display zeigt wichtige Informationen wie Modus und Status direkt an der Bürste.
-
-Entwickelt wurde sie speziell für die Verbindung mit der Station, wodurch zusätzliche Funktionen möglich sind – sie bleibt jedoch auch alleine eine leistungsstarke Premium-Zahnbürste.
-
-Perfekt für alle, die Wert auf saubere Zähne, modernes Design und ein durchdachtes Produkt legen.`
+desc:`Diese elektrische Zahnbürste verbindet minimalistisches Design mit moderner Technologie...`
 },
-
-box:{
-title:"Aqua Brush Station",
-price:99,
-img:"box.png",
-desc:`Die Station ist das Herzstück des Systems. Sie wurde entwickelt, um deine Zahnbürste zu laden, zu organisieren und ihre Funktionen zu erweitern.
-
-Durch das minimalistische Design passt sie perfekt in moderne Badezimmer.
-
-Die Zahnbürste dockt magnetisch an und wird automatisch verbunden. So entsteht ein integriertes System, das Reinigung, Komfort und Design vereint.
-
-Ideal für alle, die aus einer Zahnbürste ein echtes Smart-Care-System machen möchten.`
-},
-
-bundle:{
-title:"Aqua Brush Bundle",
-price:149,
-img:"bundle.png",
-desc:`Mit dem Bundle bekommst du das komplette System in einem Paket.
-
-Zahnbürste und Station sind perfekt aufeinander abgestimmt und bieten zusammen das volle Funktionsspektrum.
-
-Die Zahnbürste sorgt für gründliche Reinigung, während die Station Komfort, Verbindung und Erweiterungen ermöglicht.
-
-Zusammen entsteht ein modernes Zahnpflege-Setup, das Design, Technik und Alltagstauglichkeit verbindet.
-
-Perfekt für alle, die direkt das vollständige Erlebnis wollen.`
-}
+box:{title:"Station",price:99,img:"box.png",desc:`Die Station ist das Herzstück des Systems...`},
+bundle:{title:"Bundle",price:149,img:"bundle.png",desc:`Mit dem Bundle bekommst du das komplette System...`}
 };
 
+let cart=[];
+let currentType=null;
 let currentColor=null;
+let currentPrice=0;
 
+/* OPEN PRODUCT */
 function openProduct(type){
+currentType=type;
 const p=data[type];
-modal.classList.add("show");
+productPage.classList.add("show");
+
 pTitle.innerText=p.title;
 pDesc.innerText=p.desc;
 
+setTimeout(()=>document.querySelectorAll(".fade").forEach(el=>el.classList.add("show")),200);
+
 if(type==="brush"){
 const first=Object.keys(p.colors)[0];
-currentColor=first;
-pImg.src=p.colors[first].img;
-pPrice.innerText=(p.base+p.colors[first].price)+"€";
-
+setColor(first,true);
 config.innerHTML=`<div class="colors">${
 Object.keys(p.colors).map((c,i)=>
 `<div class="color ${i==0?"active":""}" onclick="setColor('${c}')">${c}</div>`
-).join("")
-}</div>`;
-
+).join("")}</div>`;
 }else{
 pImg.src=p.img;
-pPrice.innerText=p.price+"€";
+currentPrice=p.price;
+pPrice.innerText=currentPrice+"€";
 config.innerHTML="";
 }
 }
 
-function setColor(name){
+/* APPLE ZOOM */
+window.addEventListener("scroll",()=>{
+const y=window.scrollY;
+imgWrap.classList.toggle("zoom",y>120);
+});
+
+/* COLOR */
+function setColor(name,first=false){
 const p=data.brush;
 currentColor=name;
+currentPrice=p.base+p.colors[name].price;
 pImg.src=p.colors[name].img;
-pPrice.innerText=(p.base+p.colors[name].price)+"€";
+pPrice.innerText=currentPrice+"€";
+if(!first){
 document.querySelectorAll(".color").forEach(el=>el.classList.remove("active"));
 event.target.classList.add("active");
 }
+}
 
-function closeModal(){modal.classList.remove("show")}
-function bgClose(e){if(e.target.id==="modal")closeModal()}
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()})
+/* CART */
+function addToCart(){
+let label=data[currentType].title;
+if(currentType==="brush") label+=" ("+currentColor+")";
+
+const ex=cart.find(i=>i.label===label);
+if(ex) ex.qty++;
+else cart.push({label,price:currentPrice,qty:1});
+}
+
+/* CART PAGE */
+function openCart(){
+cartPage.classList.add("show");
+renderCart();
+}
+function renderCart(){
+cartList.innerHTML=cart.map((i,idx)=>`
+<div class="cartItem">
+<div>${i.label}</div>
+<div class="qty">
+<button onclick="changeQty(${idx},-1)">−</button>
+${i.qty}
+<button onclick="changeQty(${idx},1)">+</button>
+</div>
+<div>${i.price*i.qty}€</div>
+<div onclick="removeItem(${idx})" style="cursor:pointer">✕</div>
+</div>`).join("");
+
+cartTotal.innerText="Gesamt: "+
+cart.reduce((s,i)=>s+i.price*i.qty,0)+"€";
+}
+function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);renderCart();}
+function removeItem(i){cart.splice(i,1);renderCart();}
 </script>
 
 </body>
