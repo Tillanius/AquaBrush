@@ -55,6 +55,8 @@ header{
   box-shadow:0 20px 40px rgba(0,0,0,0.15);
   padding:15px;
   display:none;
+
+  /* ✅ NEU: Scroll wenn zu viele Produkte */
   max-height:260px;
   overflow-y:auto;
 }
@@ -140,7 +142,6 @@ select{
   margin-top:10px;
   width:100%;
 }
-
 </style>
 </head>
 
@@ -148,6 +149,8 @@ select{
 
 <header>
   <div class="logo">Shop</div>
+
+  <!-- 🛒 bleibt Einkaufswagen mit Zahl -->
   <div class="cart" onclick="toggleCart()">
     🛒
     <span class="cart-count" id="cartCount">0</span>
@@ -232,15 +235,35 @@ function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 
+/* ✅ verbessert: gleiche Produkte zusammenfassen */
 function addToCart(name){
-  cart.push(name);
+  const existing=cart.find(i=>i.name===name);
+  if(existing){
+    existing.qty++;
+  }else{
+    cart.push({name:name,qty:1});
+  }
   updateCart();
 }
 
+/* ✅ jetzt mit Mengenanzeige + Badge */
 function updateCart(){
-  document.getElementById("cartCount").innerText=cart.length;
+
+  // Badge Zahl
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById("cartCount").innerText=count;
+
+  // Dropdown Inhalt
   const dropdown=document.getElementById("cartDropdown");
-  dropdown.innerHTML=cart.map(i=>`<div class="cart-item">${i}</div>`).join("");
+
+  if(cart.length===0){
+    dropdown.innerHTML="<div class='cart-item'>Warenkorb leer</div>";
+    return;
+  }
+
+  dropdown.innerHTML=cart.map(i=>
+    `<div class="cart-item">${i.name} × ${i.qty}</div>`
+  ).join("");
 }
 
 function toggleCart(){
